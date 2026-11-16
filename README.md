@@ -40,29 +40,52 @@ EaglerModAPI/
 └── tests/
 ```
 
-## Installing / using during development
+## Downloads
 
-1. Package this repository's mod files as a ZIP with `metadata.json` at the package root.
-2. Import the ZIP through the Eaglercraft Mods menu in a supported client.
-3. Enable **EaglerModAPI**.
-4. For a mod that uses the library, add this dependency to its `metadata.json`:
+These are ready-to-import Zeus packages (not the full GitHub source archive):
 
-   ```json
-   {
-     "dependencies": {
-       "eaglermodapi": "*"
-     }
-   }
-   ```
+- **[EaglerModAPI 0.1.0 — library](https://github.com/Untitled-2026/EaglerModAPI/raw/refs/heads/main/downloads/EaglerModAPI-0.1.0.zip)**
+- **[EaglerModAPI Test Mod 0.1.0 — coordinate HUD example](https://github.com/Untitled-2026/EaglerModAPI/raw/refs/heads/main/downloads/EaglerModAPI-TestMod-0.1.0.zip)**
 
-5. In that mod's Lua code, retrieve the exported API:
+The Test Mod depends on EaglerModAPI, so install and enable the library first. These are preview packages; in-game testing on both target versions is still pending.
 
-   ```lua
-   local EaglerModAPI = mods.get("eaglermodapi")
-   assert(EaglerModAPI, "EaglerModAPI must be installed and enabled")
-   ```
+## Install and test in Eaglercraft
 
-For the current example consumer, see [examples/consumer](examples/consumer).
+1. Download both ZIP files above. Do not extract them.
+2. Open Eaglercraft **26.3** and go to the title screen.
+3. Open **Mods** → **Import mod** → **Choose a .zip or .lua file...**.
+4. Select `EaglerModAPI-0.1.0.zip`, review the install prompt, and click **Install**.
+5. In the Mods list, make sure **EaglerModAPI** is enabled.
+6. Repeat the import steps with `EaglerModAPI-TestMod-0.1.0.zip`.
+7. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
+8. Enter a **singleplayer** world. The test mod should display your X, Y and Z coordinates in a HUD line near the top-left corner.
+9. If the HUD does not appear, open the test mod's **Log** in the Mods menu and check for an error.
+10. Repeat the same test in Eaglercraft **26.2** and note the results in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
+
+**Important:** Zeus mods run in singleplayer and pause when you join a multiplayer server. Importing a mod ZIP runs its code inside the game, so only install packages you trust.
+
+For the official step-by-step import guide, see [Install and share mods](https://eaglercraft.com/docs/modding/install-and-share). For the package format and dependency rules, see [Zeus packaging](https://eaglercraft.com/docs/modding/packaging).
+
+## Using the API from another mod
+
+Install and enable EaglerModAPI, then declare it as a dependency in the other mod's `metadata.json`:
+
+```json
+{
+  "dependencies": {
+    "eaglermodapi": "*"
+  }
+}
+```
+
+Retrieve the exported API from Lua:
+
+```lua
+local EaglerModAPI = mods.get("eaglermodapi")
+assert(EaglerModAPI, "EaglerModAPI must be installed and enabled")
+```
+
+For the current consumer example's source files, see [examples/consumer](examples/consumer).
 
 ## Initial API surface
 
