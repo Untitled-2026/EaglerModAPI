@@ -1,0 +1,10 @@
+{
+  "id": "eaglermodapi",
+  "name": "EaglerModAPI",
+  "version": "0.1.0",
+  "description": "A cross-version helper library for Eaglercraft Zeus mods.",
+  "authors": ["Untitled-2026"],
+  "main": "main.lua",
+  "api": 1,
+  "minecraft": ["26.2", "26.3"]
+}
