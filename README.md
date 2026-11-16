@@ -44,8 +44,8 @@ EaglerModAPI/
 
 These are ready-to-import Zeus packages (not the full GitHub source archive):
 
-- **[EaglerModAPI 0.1.0 — library](https://github.com/Untitled-2026/EaglerModAPI/raw/refs/heads/main/downloads/EaglerModAPI-0.1.0.zip)**
-- **[EaglerModAPI Test Mod 0.1.0 — coordinate HUD example](https://github.com/Untitled-2026/EaglerModAPI/raw/refs/heads/main/downloads/EaglerModAPI-TestMod-0.1.0.zip)**
+- **[EaglerModAPI 0.1.0 — library](https://raw.githubusercontent.com/Untitled-2026/EaglerModAPI/main/downloads/EaglerModAPI-0.1.0.zip)**
+- **[EaglerModAPI Test Mod 0.1.0 — coordinate HUD example](https://raw.githubusercontent.com/Untitled-2026/EaglerModAPI/main/downloads/EaglerModAPI-TestMod-0.1.0.zip)**
 
 The Test Mod depends on EaglerModAPI, so install and enable the library first. These are preview packages; in-game testing on both target versions is still pending.
 
