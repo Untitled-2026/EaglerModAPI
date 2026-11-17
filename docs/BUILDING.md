@@ -1,6 +1,6 @@
 # Automated builds
 
-EaglerModAPI uses GitHub Actions to validate package metadata and create installable Zeus ZIP files.
+EaglerModAPI uses GitHub Actions to check the Lua source, validate package metadata and create installable Zeus ZIP files.
 
 ## What the workflow builds
 
@@ -10,7 +10,9 @@ The workflow creates:
 - `EaglerModAPI-TestMod-<version>.zip` — the example consumer mod. It contains root-level `metadata.json` and `main.lua`, and declares EaglerModAPI as a dependency.
 - `SHA256SUMS.txt` — SHA-256 checksums for both ZIP files.
 
-The packaging script is `scripts/build_packages.py`. It uses only Python's standard library, validates both metadata files, checks the API dependency and matching versions, and verifies the generated ZIP archives.
+The workflow installs Lua 5.4 and runs `luac5.4 -p` against the library entry point and all Lua source/example files. This checks syntax without executing the code inside Eaglercraft.
+
+The packaging script is `scripts/build_packages.py`. It uses only Python's standard library, validates both metadata files, checks the API dependency and matching versions, creates the packages, and verifies the generated ZIP archives.
 
 ## When builds run
 
@@ -25,8 +27,8 @@ For ordinary pushes, pull requests and manual runs, the downloadable packages ap
 
 ## Publishing a versioned release
 
-1. Update the `version` field in both `metadata.json` files to the same release version.
-2. Commit and push those changes to `main).
+1. Update the `version` field in both mod `metadata.json` files to the same release version.
+2. Commit and push those changes to `main`.
 3. Create and push a matching version tag. For example, for version `0.2.0`:
 
    ```bash
