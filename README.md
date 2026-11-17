@@ -49,6 +49,14 @@ These are ready-to-import Zeus packages (not the full GitHub source archive):
 
 The Test Mod depends on EaglerModAPI, so install and enable the library first. Both packages have been reported working in Eaglercraft 26.2 and 26.3; broader feature testing is still ongoing.
 
+## Automated builds
+
+GitHub Actions automatically validates the metadata and builds both installable ZIPs on pushes to `main`, pull requests targeting `main`, and manual workflow runs. Open the repository's **Actions** tab, select **Build Zeus mod packages**, open a successful run, and download its artifact named `EaglerModAPI-packages-<commit>`. The artifact contains both ZIPs and `SHA256SUMS.txt`, and is retained for 30 days.
+
+To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.2.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
+
+The links in the Downloads section above are the checked-in 0.1.0 preview packages; ordinary CI runs do not overwrite those files.
+
 ## Install and test in Eaglercraft
 
 1. Download both ZIP files above. Do not extract them.
