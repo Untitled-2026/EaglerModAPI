@@ -1,8 +1,8 @@
 {
   "id": "eaglermodapi",
   "name": "EaglerModAPI",
-  "version": "0.1.0",
-  "description": "A cross-version helper library for Eaglercraft Zeus mods.",
+  "version": "0.2.0",
+  "description": "A cross-version helper framework for Eaglercraft Zeus mods.",
   "authors": ["Untitled-2026"],
   "main": "main.lua",
   "api": 1,
