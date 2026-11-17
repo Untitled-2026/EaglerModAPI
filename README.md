@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** Early development (0.1.0). The structure and initial API are being established. Runtime testing in both game versions is still required.
+> **Status:** Early development (0.1.0). The initial library and coordinate HUD example have been reported working in Eaglercraft 26.2 and 26.3. Broader feature testing is still required.
 
 ## Goals
 
@@ -18,8 +18,8 @@ EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding 
 
 | Eaglercraft | Status | Notes |
 | --- | --- | --- |
-| 26.2 | Documentation target | Public Zeus docs cover this version; runtime validation pending. |
-| 26.3 | Documentation target | Public Zeus docs cover this version; runtime validation pending. |
+| 26.2 | User-tested (reported) | Core library and coordinate HUD example reported working; exact client build/browser not recorded. |
+| 26.3 | User-tested (reported) | Core library and coordinate HUD example reported working; exact client build/browser not recorded. |
 | Other versions | Unsupported | No compatibility promise yet. |
 
 The official Zeus documentation currently presents a shared modding API reference for 26.2 and 26.3. That does **not** replace testing against both clients.
@@ -47,7 +47,7 @@ These are ready-to-import Zeus packages (not the full GitHub source archive):
 - **[EaglerModAPI 0.1.0 — library](https://raw.githubusercontent.com/Untitled-2026/EaglerModAPI/main/downloads/EaglerModAPI-0.1.0.zip)**
 - **[EaglerModAPI Test Mod 0.1.0 — coordinate HUD example](https://raw.githubusercontent.com/Untitled-2026/EaglerModAPI/main/downloads/EaglerModAPI-TestMod-0.1.0.zip)**
 
-The Test Mod depends on EaglerModAPI, so install and enable the library first. These are preview packages; in-game testing on both target versions is still pending.
+The Test Mod depends on EaglerModAPI, so install and enable the library first. Both packages have been reported working in Eaglercraft 26.2 and 26.3; broader feature testing is still ongoing.
 
 ## Install and test in Eaglercraft
 
@@ -60,7 +60,7 @@ The Test Mod depends on EaglerModAPI, so install and enable the library first. T
 7. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
 8. Enter a **singleplayer** world. The test mod should display your X, Y and Z coordinates in a HUD line near the top-left corner.
 9. If the HUD does not appear, open the test mod's **Log** in the Mods menu and check for an error.
-10. Repeat the same test in Eaglercraft **26.2** and note the results in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
+10. Repeat the same test in Eaglercraft **26.2**. Record the exact client build and browser when available in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
 
 **Important:** Zeus mods run in singleplayer and pause when you join a multiplayer server. Importing a mod ZIP runs its code inside the game, so only install packages you trust.
 
