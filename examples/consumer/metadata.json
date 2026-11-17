@@ -1,9 +1,9 @@
 {
   "id": "eaglermodapi_example",
-  "name": "EaglerModAPI Example",
-  "version": "0.1.0",
-  "description": "Example mod showing how to consume EaglerModAPI.",
-  "authors": ["EaglerModAPI contributors"],
+  "name": "EaglerModAPI Test Mod",
+  "version": "0.2.0",
+  "description": "Tests the EaglerModAPI Player and World helpers with a coordinate HUD.",
+  "authors": ["Untitled-2026"],
   "main": "main.lua",
   "api": 1,
   "minecraft": ["26.2", "26.3"],
