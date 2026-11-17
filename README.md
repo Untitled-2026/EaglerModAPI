@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** Early development (0.1.0). The initial library and coordinate HUD example have been reported working in Eaglercraft 26.2 and 26.3. Broader feature testing is still required.
+> **Status:** EaglerModAPI 0.2.0 is in development. The initial 0.1.0 library and coordinate HUD example were reported working in Eaglercraft 26.2 and 26.3. The expanded 0.2.0 Player and World helpers need in-game testing.
 
 ## Goals
 
@@ -55,22 +55,22 @@ GitHub Actions automatically validates the metadata and builds both installable 
 
 To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.2.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
 
-The links in the Downloads section above are the checked-in 0.1.0 preview packages; ordinary CI runs do not overwrite those files.
+The direct links in the Downloads section above are the checked-in 0.1.0 preview packages. To test the current 0.2.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
 
 ## Install and test in Eaglercraft
 
-1. Download both ZIP files above. Do not extract them.
-2. Open Eaglercraft **26.3** and go to the title screen.
-3. Open **Mods** → **Import mod** → **Choose a .zip or .lua file...**.
-4. Select `EaglerModAPI-0.1.0.zip`, review the install prompt, and click **Install**.
-5. In the Mods list, make sure **EaglerModAPI** is enabled.
-6. Repeat the import steps with `EaglerModAPI-TestMod-0.1.0.zip`.
-7. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
-8. Enter a **singleplayer** world. The test mod should display your X, Y and Z coordinates in a HUD line near the top-left corner.
-9. If the HUD does not appear, open the test mod's **Log** in the Mods menu and check for an error.
-10. Repeat the same test in Eaglercraft **26.2**. Record the exact client build and browser when available in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
+1. For the latest 0.2.0 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
+2. Extract the outer artifact ZIP. It contains two mod ZIPs and a checksum file; do not extract the individual mod ZIPs.
+3. Open Eaglercraft **26.3** and go to the title screen.
+4. Open **Mods** → **Import mod** → **Choose a .zip or .lua file...**.
+5. Select `EaglerModAPI-0.2.0.zip`, review the install prompt, and click **Install**.
+6. In the Mods list, make sure **EaglerModAPI** is enabled.
+7. Repeat the import steps with `EaglerModAPI-TestMod-0.2.0.zip`.
+8. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
+9. Enter a **singleplayer** world. The test HUD should show your coordinates, health, hunger, gamemode, dimension, biome, weather and world time.
+10. Check the test mod's **Log** if anything is missing or an error appears, then repeat in Eaglercraft **26.2**. Record exact client builds and browser versions in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
 
-**Important:** Zeus mods run in singleplayer and pause when you join a multiplayer server. Importing a mod ZIP runs its code inside the game, so only install packages you trust.
+**Important:** Zeus mods run on the title screen, in menus, in singleplayer and LAN worlds, and on servers. On a server, a mod runs locally for you; other players do not see its HUD or know it is running. Mod-added blocks, items and mobs only work in singleplayer and LAN worlds you open. Follow each server's rules. Only install packages you trust.
 
 For the official step-by-step import guide, see [Install and share mods](https://eaglercraft.com/docs/modding/install-and-share). For the package format and dependency rules, see [Zeus packaging](https://eaglercraft.com/docs/modding/packaging).
 
@@ -95,14 +95,14 @@ assert(EaglerModAPI, "EaglerModAPI must be installed and enabled")
 
 For the current consumer example's source files, see [examples/consumer](examples/consumer).
 
-## Initial API surface
+## API surface
 
-The first development milestone focuses on:
+The 0.2.0 development API includes:
 
 - `EaglerModAPI.getInfo()` — API and detected game-version information.
 - `EaglerModAPI.compat` — supported-version and capability checks.
-- `EaglerModAPI.player` — normalized player information.
-- `EaglerModAPI.world` — normalized world queries.
+- `EaglerModAPI.player` — normalized identity, position, movement, health, hunger, XP, status, inventory and player-action helpers.
+- `EaglerModAPI.world` — normalized block, light, biome, time, weather, player-list and nearby-entity helpers.
 
 The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists.
 
