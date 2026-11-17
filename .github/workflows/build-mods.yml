@@ -26,6 +26,16 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7.0.1
 
+      - name: Install Lua 5.4
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y lua5.4
+
+      - name: Check Lua 5.4 syntax
+        run: |
+          luac5.4 -p main.lua
+          find src examples/consumer -type f -name '*.lua' -print0 | xargs -0 -r -n 1 luac5.4 -p
+
       - name: Build installable Zeus packages
         env:
           GITHUB_REF_TYPE: ${{ github.ref_type }}
