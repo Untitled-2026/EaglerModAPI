@@ -78,6 +78,9 @@ function Probe.all()
         commandsList = hasFunction(commands, "list"),
 
         timerAfter = hasFunction(timer, "after"),
+        timerEvery = hasFunction(timer, "every"),
+        timerTime = hasFunction(timer, "time"),
+        timerTicks = hasFunction(timer, "ticks"),
         uiNotify = hasFunction(ui, "notify"),
         modExports = type(mod) == "table" and type(mod.export) == "table",
         otherMods = hasFunction(mods, "get")
