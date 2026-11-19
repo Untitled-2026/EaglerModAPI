@@ -62,9 +62,22 @@ function Probe.all()
         worldEntities = hasFunction(world, "entities"),
 
         hudAdd = hasFunction(hud, "add"),
+        hudRemoveLayer = hasFunction(hud, "removeLayer"),
+        hudBeforeAfter = hasFunction(hud, "before") and hasFunction(hud, "after"),
+        hudHideShow = hasFunction(hud, "hide") and hasFunction(hud, "show"),
+        hudReplace = hasFunction(hud, "replace"),
+        hudElements = hasFunction(hud, "elements"),
+
         eventsOn = hasFunction(events, "on"),
-        timerAfter = hasFunction(timer, "after"),
+        eventsOnce = hasFunction(events, "once"),
+        eventsOff = hasFunction(events, "off"),
+        eventsEmit = hasFunction(events, "emit"),
+
         commandsRegister = hasFunction(commands, "register"),
+        commandsUnregister = hasFunction(commands, "unregister"),
+        commandsList = hasFunction(commands, "list"),
+
+        timerAfter = hasFunction(timer, "after"),
         uiNotify = hasFunction(ui, "notify"),
         modExports = type(mod) == "table" and type(mod.export) == "table",
         otherMods = hasFunction(mods, "get")
