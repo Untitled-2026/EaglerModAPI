@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** EaglerModAPI 0.4.0 is in development. Version 0.3.0 was user-tested successfully in Eaglercraft 26.2 and 26.3, including the example HUD, command and event test flows. The new Timer and UI notification modules in 0.4.0 are awaiting in-game testing.
+> **Status:** EaglerModAPI 0.4.0 is in development. Versions 0.3.0 and 0.4.0 were user-tested successfully in Eaglercraft 26.2 and 26.3. The main example flows for HUD, Events, Commands, Timer and UI notifications passed.
 
 ## Goals
 
@@ -18,8 +18,8 @@ EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding 
 
 | Eaglercraft | Status | Notes |
 | --- | --- | --- |
-| 26.2 | 0.3.0 user-tested (reported) | Main example flow passed: HUD updates, /emapi, /emapi ping and the world-join message; exact client build/browser not recorded. |
-| 26.3 | 0.3.0 user-tested (reported) | Main example flow passed: HUD updates, /emapi, /emapi ping and the world-join message; exact client build/browser not recorded. |
+| 26.2 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; exact client build/browser not recorded. |
+| 26.3 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; exact client build/browser not recorded. |
 | Other versions | Unsupported | No compatibility promise yet. |
 
 The official Zeus documentation currently presents a shared modding API reference for 26.2 and 26.3. That does **not** replace testing against both clients.
@@ -59,8 +59,10 @@ To test the current 0.4.0 development build, download the newest successful buil
 7. Repeat the import steps with `EaglerModAPI-TestMod-0.4.0.zip`.
 8. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
 9. Enter a **singleplayer** world. The HUD should show player/world details and a health bar. Run `/emapi` and `/emapi ping` to test the Commands and Events APIs.
-10. Run `/emapi notify`, `/emapi timer`, `/emapi clock`, `/emapi repeat` and `/emapi stop` to test the new UI and Timer APIs.
+10. Run `/emapi notify`, `/emapi timer`, `/emapi clock`, `/emapi repeat` and `/emapi stop` to test the UI and Timer APIs.
 11. Check the test mod's **Log** if anything is missing or an error appears, then repeat in Eaglercraft **26.2**. Record exact client builds and browser versions in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
+
+**Command input note:** Eaglercraft may show an “unknown or misspelled command” hint while a local mod command is being typed. If the command is registered, it can still run when submitted. The documented Zeus command API does not currently expose a chat autocomplete/suggestion registration function.
 
 **Important:** Zeus mods run on the title screen, in menus, in singleplayer and LAN worlds, and on servers. On a server, a mod runs locally for you; other players do not see its HUD or know it is running. Mod-added blocks, items and mobs only work in singleplayer and LAN worlds you open. Follow each server's rules. Only install packages you trust.
 
@@ -101,7 +103,7 @@ The 0.4.0 development API includes:
 - `EaglerModAPI.timer` — schedule one-shot and repeating callbacks, cancel timers, and read timer time/ticks.
 - `EaglerModAPI.ui` — show popup notifications through Zeus.
 
-The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.3.0 example flow was reported working in both supported clients. That confirms the tested example paths, not every individual helper. The new 0.4.0 Timer and UI notification features still need in-game testing.
+The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.3.0 example flow was reported working in both supported clients. That confirms the tested example paths, not every individual helper.
 
 ## Development principles
 
