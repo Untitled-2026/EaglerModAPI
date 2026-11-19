@@ -5,7 +5,7 @@
 - Eaglercraft 26.2
 - Eaglercraft 26.3
 
-The main 0.3.0 example flow was user-reported as passing on both targets. The additional 0.4.0 Timer and UI notification modules remain pending in-game testing on each client.
+The main 0.3.0 and 0.4.0 example flows were user-reported as passing on both targets. The additional 0.5.0 Settings, Keybinds and Storage modules remain pending in-game testing on each client.
 
 ## Detection order
 
