@@ -29,6 +29,9 @@ API_REQUIRED_FILES = (
     "src/modules/commands.lua",
     "src/modules/timer.lua",
     "src/modules/ui.lua",
+    "src/modules/settings.lua",
+    "src/modules/keys.lua",
+    "src/modules/storage.lua",
 )
 
 
