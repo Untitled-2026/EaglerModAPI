@@ -82,6 +82,28 @@ function Probe.all()
         timerTime = hasFunction(timer, "time"),
         timerTicks = hasFunction(timer, "ticks"),
         uiNotify = hasFunction(ui, "notify"),
+
+        keysBind = hasFunction(keys, "bind"),
+        keysIsDown = hasFunction(keys, "isDown"),
+        keysCode = hasFunction(keys, "code"),
+        keysName = hasFunction(keys, "name"),
+
+        settingsToggle = hasFunction(settings, "toggle"),
+        settingsSlider = hasFunction(settings, "slider"),
+        settingsChoice = hasFunction(settings, "choice"),
+        settingsText = hasFunction(settings, "text"),
+        settingsKey = hasFunction(settings, "key"),
+        settingsColor = hasFunction(settings, "color"),
+        settingsButton = hasFunction(settings, "button"),
+        settingsGet = hasFunction(settings, "get"),
+        settingsSet = hasFunction(settings, "set"),
+        settingsReset = hasFunction(settings, "reset"),
+        settingsAll = hasFunction(settings, "all"),
+        settingsOnChange = hasFunction(settings, "onChange"),
+        settingsOpen = hasFunction(settings, "open"),
+
+        storageTable = type(storage) == "table",
+        modSave = type(mod) == "table" and type(mod.save) == "function",
         modExports = type(mod) == "table" and type(mod.export) == "table",
         otherMods = hasFunction(mods, "get")
     }
