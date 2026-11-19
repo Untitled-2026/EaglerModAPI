@@ -5,7 +5,7 @@
 - Eaglercraft 26.2
 - Eaglercraft 26.3
 
-These are documentation targets in 0.1.0. Do not label them runtime-tested until the manual test checklist has passed on each client.
+The main 0.3.0 example flow was user-reported as passing on both targets. The additional 0.4.0 Timer and UI notification modules remain pending in-game testing on each client.
 
 ## Detection order
 
@@ -41,6 +41,6 @@ end
 ## Compatibility states
 
 - **Documented:** official documentation describes the API for the target.
-- **Runtime tested:** the manual test checklist passed on that client build.
+- **Runtime tested:** the relevant version's manual test checklist passed on that client build; record whether the result is user-reported or independently reproduced.
 - **Experimental:** behavior exists but has not passed the complete test checklist.
 - **Unsupported:** no compatibility promise is made.
