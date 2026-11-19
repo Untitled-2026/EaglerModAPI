@@ -11,16 +11,126 @@ local function display(value)
     return tostring(value)
 end
 
+-- Register player-editable settings. Zeus displays these in the mod's Settings page.
+API.settings.toggle("hudEnabled", {
+    label = "Show status HUD",
+    description = "Show or hide the player and world information panel.",
+    default = true
+})
+
+API.settings.choice("hudCorner", {
+    label = "HUD corner",
+    description = "Choose where the status panel appears.",
+    options = { "Top left", "Top right", "Bottom left", "Bottom right" },
+    default = "Top left"
+})
+
+API.settings.slider("hudWidth", {
+    label = "HUD width",
+    description = "Change the width of the status panel.",
+    min = 230,
+    max = 360,
+    step = 10,
+    default = 254
+})
+
+API.settings.text("hudPrefix", {
+    label = "HUD title",
+    description = "Text shown at the start of the HUD title.",
+    default = "EaglerModAPI"
+})
+
+API.settings.color("hudTextColor", {
+    label = "HUD title color",
+    description = "Choose the color used for the HUD title.",
+    default = 0xFF55FF55
+})
+
+API.settings.toggle("notifyOnToggle", {
+    label = "Notify when HUD toggles",
+    description = "Show a popup after changing the HUD with its keybind.",
+    default = true
+})
+
+API.settings.button("resetToggleCount", {
+    label = "Reset saved HUD toggle count",
+    description = "Set the persistent toggle counter back to zero.",
+    onClick = function()
+        local ok, err = API.storage.set("hudToggleCount", 0, true)
+        if ok then
+            API.ui.notify("EaglerModAPI", "Saved toggle counter reset.")
+        else
+            mod.warn("Could not reset toggle counter: " .. tostring(err))
+        end
+    end
+})
+
+-- Log settings changes for debugging without flooding the chat.
+API.settings.onChange(function(key, value, oldValue)
+    if key == "hudEnabled" then
+        mod.log("HUD visibility changed:", tostring(oldValue), "->", tostring(value))
+    end
+end)
+
+-- The keybind appears automatically in the mod's Settings page and can be rebound.
+API.keys.bind({
+    id = "toggle_hud",
+    label = "Toggle status HUD",
+    description = "Show or hide the EaglerModAPI status panel.",
+    default = "h",
+    onPress = function()
+        local currentlyEnabled = API.settings.get("hudEnabled")
+        if currentlyEnabled == nil then currentlyEnabled = true end
+
+        local enabled = not currentlyEnabled
+        local ok, err = API.settings.set("hudEnabled", enabled)
+        if not ok then
+            mod.warn("Could not toggle HUD: " .. tostring(err))
+            return
+        end
+
+        local count = API.storage.get("hudToggleCount", 0)
+        if type(count) ~= "number" then count = 0 end
+        local saved, saveError = API.storage.set("hudToggleCount", count + 1, true)
+        if not saved then
+            mod.warn("Could not save HUD toggle count: " .. tostring(saveError))
+        end
+
+        if API.settings.get("notifyOnToggle") ~= false then
+            API.ui.notify("EaglerModAPI", enabled and "HUD enabled." or "HUD hidden.")
+        end
+    end,
+    inScreens = false
+})
+
 -- Demonstrate the higher-level HUD API and the built-in Zeus drawing context.
 API.hud.add("eaglermodapi_example", function(ctx)
+    if API.settings.get("hudEnabled") == false then
+        return
+    end
+
+    local width = API.settings.get("hudWidth") or 254
+    local corner = API.settings.get("hudCorner") or "Top left"
+    local prefix = API.settings.get("hudPrefix") or "EaglerModAPI"
+    local titleColor = API.settings.get("hudTextColor") or 0xFF55FF55
+
+    local x = 4
+    local y = 4
+    if corner:find("right") and type(ctx.width) == "number" then
+        x = math.max(4, ctx.width - width - 4)
+    end
+    if corner:find("Bottom") and type(ctx.height) == "number" then
+        y = math.max(4, ctx.height - 95)
+    end
+
     local position = API.player.getPosition()
     if not position then
-        API.hud.drawPanel(ctx, 4, 4, 224, 28, {
+        API.hud.drawPanel(ctx, x, y, width, 28, {
             background = "#99000000",
             border = "#55FFFFFF"
         })
-        API.hud.drawText(ctx, "EaglerModAPI: waiting for player", 10, 10, {
-            color = "#FFCC55"
+        API.hud.drawText(ctx, prefix .. ": waiting for player", x + 6, y + 6, {
+            color = titleColor
         })
         return
     end
@@ -36,29 +146,29 @@ API.hud.add("eaglermodapi_example", function(ctx)
     local timeOfDay = API.world.getTimeOfDay()
     local weather = API.world.getWeather()
 
-    API.hud.drawPanel(ctx, 4, 4, 254, 91, {
+    API.hud.drawPanel(ctx, x, y, width, 91, {
         background = "#99000000",
         border = "#6677AAFF"
     })
 
-    API.hud.drawText(ctx, "EaglerModAPI " .. info.version .. " | " .. display(name), 10, 10, {
-        color = "#55FF55"
+    API.hud.drawText(ctx, prefix .. " 0.5.0 | " .. display(name), x + 6, y + 6, {
+        color = titleColor
     })
     API.hud.drawText(
         ctx,
         string.format("XYZ: %.1f / %.1f / %.1f",
             position.x, position.y, position.z),
-        10, 21
+        x + 6, y + 17
     )
     API.hud.drawText(
         ctx,
         "Health: " .. display(health) .. "/" .. display(maxHealth)
             .. "  Food: " .. display(food),
-        10, 32
+        x + 6, y + 28
     )
 
     if type(health) == "number" and type(maxHealth) == "number" and maxHealth > 0 then
-        API.hud.drawBar(ctx, 10, 44, 110, 6, health, maxHealth, {
+        API.hud.drawBar(ctx, x + 6, y + 40, 110, 6, health, maxHealth, {
             background = "#AA333333",
             fill = "#55CC55",
             border = "#AAFFFFFF"
@@ -68,17 +178,17 @@ API.hud.add("eaglermodapi_example", function(ctx)
     API.hud.drawText(
         ctx,
         "Mode: " .. display(gamemode) .. " | " .. display(dimension),
-        10, 55
+        x + 6, y + 51
     )
     API.hud.drawText(
         ctx,
         "Biome: " .. display(biome) .. " | " .. display(weather),
-        10, 66
+        x + 6, y + 62
     )
     API.hud.drawText(
         ctx,
         "Day: " .. display(day) .. " | Time: " .. display(timeOfDay),
-        10, 77
+        x + 6, y + 73
     )
 end)
 
@@ -178,6 +288,30 @@ API.commands.register("emapi", function(args, raw)
         return
     end
 
+    if command == "prefs" then
+        chat.print("HUD enabled: " .. display(API.settings.get("hudEnabled")))
+        chat.print("HUD corner: " .. display(API.settings.get("hudCorner")))
+        chat.print("HUD width: " .. display(API.settings.get("hudWidth")))
+        chat.print("Toggle key: " .. display(API.settings.get("toggle_hud")))
+        chat.print("Saved HUD toggles: " .. display(API.storage.get("hudToggleCount", 0)))
+        return
+    end
+
+    if command == "count" then
+        chat.print("Saved HUD toggles: " .. display(API.storage.get("hudToggleCount", 0)))
+        return
+    end
+
+    if command == "resetcount" then
+        local ok, err = API.storage.set("hudToggleCount", 0, true)
+        if ok then
+            chat.print("Saved HUD toggle count reset to zero.")
+        else
+            chat.print("Could not reset count: " .. tostring(err))
+        end
+        return
+    end
+
     local current = API.getInfo()
     local pos = API.player.getPosition()
 
@@ -187,5 +321,5 @@ API.commands.register("emapi", function(args, raw)
     else
         chat.print("Position unavailable (join a world first).")
     end
-    chat.print("Try /emapi notify, timer, repeat, stop or clock; use /emapi ping for events.")
+    chat.print("Try /emapi prefs, count or resetcount; use /emapi notify, timer, repeat, stop, clock or ping.")
 end, "Test the EaglerModAPI modules with local subcommands")
