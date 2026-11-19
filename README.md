@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** EaglerModAPI 0.2.0 is in development. The initial 0.1.0 library and coordinate HUD example were reported working in Eaglercraft 26.2 and 26.3. The expanded 0.2.0 Player and World helpers need in-game testing.
+> **Status:** EaglerModAPI 0.2.0 has been user-tested successfully in Eaglercraft 26.2 and 26.3. The expanded example HUD confirms the position, health, hunger, gamemode, dimension, biome, weather and world-time display paths; further testing is still needed for every individual helper.
 
 ## Goals
 
@@ -18,8 +18,8 @@ EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding 
 
 | Eaglercraft | Status | Notes |
 | --- | --- | --- |
-| 26.2 | User-tested (reported) | Core library and coordinate HUD example reported working; exact client build/browser not recorded. |
-| 26.3 | User-tested (reported) | Core library and coordinate HUD example reported working; exact client build/browser not recorded. |
+| 26.2 | 0.2.0 user-tested (reported) | Library and expanded Player/World example HUD confirmed working; exact client build/browser not recorded. |
+| 26.3 | 0.2.0 user-tested (reported) | Library and expanded Player/World example HUD confirmed working; exact client build/browser not recorded. |
 | Other versions | Unsupported | No compatibility promise yet. |
 
 The official Zeus documentation currently presents a shared modding API reference for 26.2 and 26.3. That does **not** replace testing against both clients.
@@ -47,7 +47,7 @@ These are ready-to-import Zeus packages (not the full GitHub source archive):
 - **[EaglerModAPI 0.1.0 — library](https://raw.githubusercontent.com/Untitled-2026/EaglerModAPI/main/downloads/EaglerModAPI-0.1.0.zip)**
 - **[EaglerModAPI Test Mod 0.1.0 — coordinate HUD example](https://raw.githubusercontent.com/Untitled-2026/EaglerModAPI/main/downloads/EaglerModAPI-TestMod-0.1.0.zip)**
 
-The Test Mod depends on EaglerModAPI, so install and enable the library first. Both packages have been reported working in Eaglercraft 26.2 and 26.3; broader feature testing is still ongoing.
+The Test Mod depends on EaglerModAPI, so install and enable the library first. The 0.2.0 development packages and expanded example HUD have now been reported working in both Eaglercraft 26.2 and 26.3.
 
 ## Automated builds
 
@@ -104,7 +104,7 @@ The 0.2.0 development API includes:
 - `EaglerModAPI.player` — normalized identity, position, movement, health, hunger, XP, status, inventory and player-action helpers.
 - `EaglerModAPI.world` — normalized block, light, biome, time, weather, player-list and nearby-entity helpers.
 
-The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists.
+The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The example HUD has been tested by the project maintainer on both supported client versions; functions not used by that example remain to be tested individually.
 
 ## Development principles
 
