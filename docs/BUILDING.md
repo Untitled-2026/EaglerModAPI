@@ -29,10 +29,10 @@ For ordinary pushes, pull requests and manual runs, the downloadable packages ap
 
 1. Update the `version` field in both mod `metadata.json` files to the same release version.
 2. Commit and push those changes to `main`.
-3. Create and push a matching version tag. For example, for version `0.2.0`:
+3. Create and push a matching version tag. For example, for version `0.3.0`:
 
    ```bash
-   git tag v0.2.0
+   git tag v0.3.0
    git push origin v0.2.0
    ```
 
@@ -51,5 +51,5 @@ python3 scripts/build_packages.py
 The packages are written to `dist/`. To check that a release tag matches the metadata version:
 
 ```bash
-python3 scripts/build_packages.py --expected-version 0.2.0
+python3 scripts/build_packages.py --expected-version 0.3.0
 ```
