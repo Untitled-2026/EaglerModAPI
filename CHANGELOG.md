@@ -2,14 +2,29 @@
 
 All notable project changes are recorded here.
 
-## [0.3.0] - In development
+## [0.4.0] - In development
+
+### Added
+- Timer API wrappers for one-shot and repeating timers, cancellation, active-state checks, elapsed time and game ticks.
+- UI API wrapper for Zeus popup notifications.
+- Example commands for testing notifications, delayed/repeating timers and timer counters.
+
+### Changed
+- Bumped the library and example package metadata to 0.4.0.
+- Extended runtime capability detection and the package validation list for the new modules.
+- Updated the API documentation and manual test checklist.
+
+### Testing
+- 0.4.0 is awaiting in-game testing in Eaglercraft 26.2 and 26.3.
+
+## [0.3.0] - Tested preview
 
 ### Added
 - HUD API wrappers for adding/removing panels and modifying built-in HUD elements.
 - HUD drawing helpers for text, panels and progress bars.
 - Events API wrappers for listeners, one-time listeners, removal and custom events.
 - Commands API wrappers for registering, unregistering and listing mod-local commands.
-- Example mod now demonstrates the HUD, Events and Commands APIs.
+- Example mod demonstrates the HUD, Events and Commands APIs.
 - Runtime capability detection for HUD, Events and Commands functions.
 
 ### Changed
@@ -17,8 +32,9 @@ All notable project changes are recorded here.
 - Updated the public API documentation and test checklist.
 
 ### Testing
-- 0.2.0 was user-reported as working in Eaglercraft 26.2 and 26.3.
-- 0.3.0 requires in-game testing in both supported versions.
+- User-reported successful test of the main 0.3.0 example flow in Eaglercraft 26.2 and 26.3 on 2026-11-18: HUD updates, /emapi, /emapi ping, and the world-join event message.
+- Exact client build numbers and browser versions were not recorded.
+- Additional individual helper methods were not all tested separately.
 
 ## [0.2.0] - Preview
 
