@@ -27,6 +27,8 @@ API_REQUIRED_FILES = (
     "src/modules/hud.lua",
     "src/modules/events.lua",
     "src/modules/commands.lua",
+    "src/modules/timer.lua",
+    "src/modules/ui.lua",
 )
 
 
