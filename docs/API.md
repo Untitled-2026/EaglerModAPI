@@ -1,4 +1,4 @@
-# Public API (0.4.0)
+# Public API (0.5.0)
 
 Consumer mods retrieve the library after declaring `eaglermodapi` as a dependency:
 
