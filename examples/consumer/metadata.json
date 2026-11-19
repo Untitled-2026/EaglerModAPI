@@ -1,8 +1,8 @@
 {
   "id": "eaglermodapi_example",
   "name": "EaglerModAPI Test Mod",
-  "version": "0.3.0",
-  "description": "Tests EaglerModAPI Player, World, HUD, Events and Commands modules.",
+  "version": "0.4.0",
+  "description": "Tests EaglerModAPI Player, World, HUD, Events, Commands, Timer and UI notification modules.",
   "authors": ["Untitled-2026"],
   "main": "main.lua",
   "api": 1,
