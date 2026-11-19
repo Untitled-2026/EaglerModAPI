@@ -153,6 +153,88 @@ Do not register a command name already used by another mod or a built-in command
 
 **Chat input hint:** Eaglercraft's chat input may show an “unknown or misspelled command” hint while a local mod command is being typed, even though pressing Enter runs the registered command. The documented Zeus Lua API currently provides command registration, removal and listing, but no function to add local commands to the chat autocomplete/suggestion system. This is a client-side hint limitation, not a failure of `API.commands.register`.
 
+## Settings API
+
+The Settings API creates options in the mod's Settings page. Zeus saves setting values automatically.
+
+- `API.settings.toggle(key, options)` — on/off setting.
+- `API.settings.slider(key, options)` — numeric setting with `min`, `max`, optional `step` and `default`.
+- `API.settings.choice(key, options)` — selection from an `options` list.
+- `API.settings.text(key, options)` — text field.
+- `API.settings.key(key, options)` — configurable key value.
+- `API.settings.color(key, options)` — color picker. Its value is a number such as `0xFFFFFFFF`, suitable for Zeus drawing functions.
+- `API.settings.button(key, options)` — button that calls `options.onClick`.
+- `API.settings.get(key)`, `API.settings.set(key, value)` — read or change a setting.
+- `API.settings.reset(key)` — restore its default.
+- `API.settings.all()` — return all setting values.
+- `API.settings.onChange(callback)` — callback receives `key, value, oldValue` whenever a setting changes.
+- `API.settings.open()` — open the mod's settings page.
+
+Every setting requires a non-empty `label`. A `description` is optional. Do not use reserved keys that match a Settings API function name, such as `toggle`, `get`, `set` or `open`.
+
+Example:
+
+```lua
+API.settings.toggle("showHud", {
+    label = "Show HUD",
+    default = true
+})
+
+API.settings.slider("hudWidth", {
+    label = "HUD width",
+    min = 220,
+    max = 360,
+    step = 10,
+    default = 260
+})
+
+if API.settings.get("showHud") then
+    -- Draw the HUD.
+end
+```
+
+## Keybinds API
+
+- `API.keys.bind(options)` — register a configurable keybind.
+- `API.keys.isDown(name)` — check whether a keyboard key is held.
+- `API.keys.code(name)` — return a key's numeric code, or `nil`.
+- `API.keys.name(code)` — return the name for a numeric key code.
+
+The `bind` options are `id` (unique within your mod), `label`, optional `description`, optional `default` key name, optional `onPress` and `onRelease` callbacks, and optional `inScreens` boolean. Keybinds automatically appear in the mod's Settings page and players can rebind them there. The selected key can be read with `API.settings.get(id)`.
+
+Example:
+
+```lua
+API.keys.bind({
+    id = "toggle_hud",
+    label = "Toggle HUD",
+    default = "h",
+    onPress = function()
+        local enabled = API.settings.get("showHud")
+        API.settings.set("showHud", not enabled)
+    end
+})
+```
+
+## Persistent Storage API
+
+The Storage API wraps Zeus's per-mod persistent `storage` table.
+
+- `API.storage.get(key, defaultValue?)` — read a value, using the default when no value exists.
+- `API.storage.set(key, value, saveImmediately?)` — set a value. Pass `true` to call `mod.save()` immediately.
+- `API.storage.remove(key, saveImmediately?)` — remove a value.
+- `API.storage.all()` — return the underlying storage table.
+- `API.storage.save()` — save settings and storage immediately.
+
+Only strings, booleans, finite numbers and plain tables of those values are accepted. Do not replace the table returned by `API.storage.all()`; change its fields through the helper methods or by assigning individual fields. Zeus also saves storage and settings periodically and when the mod unloads, but call `save()` after important changes to ensure they are written.
+
+Example:
+
+```lua
+local visits = API.storage.get("visits", 0)
+API.storage.set("visits", visits + 1, true)
+```
+
 ## Timer API
 
 The Timer API wraps Zeus's timer scheduler and passes timer handles through unchanged.
@@ -193,4 +275,4 @@ Wrapper methods return `nil, error_code` when validation fails, the required gam
 
 ## Compatibility note
 
-The 0.3.0 example flow was user-reported as working in Eaglercraft 26.2 and 26.3. The Timer and UI notification wrappers added in 0.4.0 are still awaiting in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
+The 0.3.0 and 0.4.0 example flows were user-reported as working in Eaglercraft 26.2 and 26.3. The Settings, Keybinds and Storage wrappers added in 0.5.0 are awaiting in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
