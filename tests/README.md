@@ -42,6 +42,23 @@ The main 0.3.0 example flow was reported passing in both target clients on 2026-
 10. Check both Mods menu Logs for load errors.
 11. Repeat all checks in Eaglercraft 26.2 and 26.3 separately.
 
+## 0.5.0 Settings, Keybinds and Storage test
+
+1. Download the newest successful **Build Zeus mod packages** artifact from GitHub Actions.
+2. Extract the outer artifact ZIP; do not extract either mod ZIP inside it.
+3. Import and enable EaglerModAPI 0.5.0, then import and enable EaglerModAPI Test Mod 0.5.0.
+4. Open Mods → EaglerModAPI Test Mod → Settings.
+5. Change the HUD title, position, width and title color. Confirm the HUD updates to match.
+6. Turn off **Show status HUD** in Settings and confirm the panel disappears; turn it back on.
+7. Find **Toggle status HUD** in the same settings page and change its key from H to another key.
+8. Return to a world, press the newly assigned key and confirm it toggles the HUD.
+9. Run `/emapi prefs` to check the current preferences and key assignment.
+10. Run `/emapi count`, toggle the HUD several times, and confirm the saved count increases.
+11. Reload or disable and re-enable the test mod, then run `/emapi count` again to confirm the saved value remains.
+12. Press **Reset saved HUD toggle count** in Settings or run `/emapi resetcount`; confirm the count returns to zero.
+13. Check both Mods menu Logs for errors.
+14. Repeat all checks in Eaglercraft 26.2 and 26.3 separately.
+
 ## Command input hint
 
 When typing a registered local mod command, Eaglercraft may show an "unknown or misspelled command" hint before Enter is pressed. Submit the command to confirm it executes. The current documented Zeus API does not provide a supported autocomplete/suggestion registration function, so this hint is a client UI limitation rather than a command dispatch failure.
@@ -66,4 +83,4 @@ These checks can be done with a small temporary test mod or in the in-game edito
 
 ## Reporting
 
-Record results in `COMPATIBILITY-MATRIX.md`. Include client build, browser, test date, result, and notes. Mark 0.4.0 as verified only after its Timer and UI notification checklist has passed on that client version. Mark individual helper methods as tested only after they have been checked directly.
+Record results in `COMPATIBILITY-MATRIX.md`. Include client build, browser, test date, result, and notes. Mark 0.5.0 as verified only after its Settings, Keybinds and Storage checklist has passed on that client version. Mark individual helper methods as tested only after they have been checked directly.
