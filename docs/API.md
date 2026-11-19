@@ -1,4 +1,4 @@
-# Public API (0.3.0)
+# Public API (0.4.0)
 
 Consumer mods retrieve the library after declaring `eaglermodapi` as a dependency:
 
@@ -151,10 +151,44 @@ end, "Say hello")
 
 Do not register a command name already used by another mod or a built-in command. Registering a conflicting mod command can fail, and a mod command can take precedence over the game's command with the same name.
 
+## Timer API
+
+The Timer API wraps Zeus's timer scheduler and passes timer handles through unchanged.
+
+- `API.timer.after(seconds, callback)` — runs the callback once after the delay and returns a timer handle.
+- `API.timer.every(seconds, callback)` — runs the callback repeatedly and returns a timer handle. The interval must be greater than zero.
+- `API.timer.cancel(handle)` — cancels a timer using its native `:cancel()` method.
+- `API.timer.isActive(handle)` — reads the handle's `active` property.
+- `API.timer.time()` — returns the current timer time in seconds, including milliseconds.
+- `API.timer.ticks()` — returns the number of game ticks since the game started.
+
+A delay must be a finite, non-negative number. Timer callbacks are passed directly to Zeus.
+
+Example:
+
+```lua
+local handle = API.timer.every(5, function()
+    API.ui.notify("Reminder", "Five seconds have passed.")
+end)
+
+-- Later:
+API.timer.cancel(handle)
+```
+
+## UI API
+
+- `API.ui.notify(title, message)` — displays a Zeus popup notification. Both arguments must be strings. A new notification replaces the previous popup.
+
+Example:
+
+```lua
+API.ui.notify("My Mod", "Settings saved.")
+```
+
 ## Errors
 
 Wrapper methods return `nil, error_code` when validation fails, the required game context is missing, or the Zeus function is unavailable. Registration functions return `true` on success. Event listener registration returns the native Zeus handle.
 
 ## Compatibility note
 
-0.3.0 is designed against the shared Zeus API reference for Eaglercraft 26.2 and 26.3. The new HUD, Events and Commands wrappers must be tested in both clients before being marked verified. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
+The 0.3.0 example flow was user-reported as working in Eaglercraft 26.2 and 26.3. The Timer and UI notification wrappers added in 0.4.0 are still awaiting in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
