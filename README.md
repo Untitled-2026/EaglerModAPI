@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** EaglerModAPI 0.3.0 is in development. Version 0.2.0 was user-tested successfully in Eaglercraft 26.2 and 26.3. The new HUD, Events and Commands modules are awaiting in-game testing.
+> **Status:** EaglerModAPI 0.4.0 is in development. Version 0.3.0 was user-tested successfully in Eaglercraft 26.2 and 26.3, including the example HUD, command and event test flows. The new Timer and UI notification modules in 0.4.0 are awaiting in-game testing.
 
 ## Goals
 
@@ -18,8 +18,8 @@ EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding 
 
 | Eaglercraft | Status | Notes |
 | --- | --- | --- |
-| 26.2 | 0.2.0 user-tested (reported) | Library and expanded Player/World example HUD confirmed working; exact client build/browser not recorded. |
-| 26.3 | 0.2.0 user-tested (reported) | Library and expanded Player/World example HUD confirmed working; exact client build/browser not recorded. |
+| 26.2 | 0.3.0 user-tested (reported) | Main example flow passed: HUD updates, /emapi, /emapi ping and the world-join message; exact client build/browser not recorded. |
+| 26.3 | 0.3.0 user-tested (reported) | Main example flow passed: HUD updates, /emapi, /emapi ping and the world-join message; exact client build/browser not recorded. |
 | Other versions | Unsupported | No compatibility promise yet. |
 
 The official Zeus documentation currently presents a shared modding API reference for 26.2 and 26.3. That does **not** replace testing against both clients.
@@ -40,27 +40,27 @@ EaglerModAPI/
 └── tests/
 ```
 
-
 ## Automated builds
 
 GitHub Actions automatically validates the metadata and builds both installable ZIPs on pushes to `main`, pull requests targeting `main`, and manual workflow runs. Open the repository's **Actions** tab, select **Build Zeus mod packages**, open a successful run, and download its artifact named `EaglerModAPI-packages-<commit>`. The artifact contains both ZIPs and `SHA256SUMS.txt`, and is retained for 30 days.
 
-To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.2.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
+To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.3.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
 
-To test the current 0.2.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
+To test the current 0.4.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
 
 ## Install and test in Eaglercraft
 
-1. For the latest 0.3.0 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
+1. For the latest 0.4.0 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
 2. Extract the outer artifact ZIP. It contains two mod ZIPs and a checksum file; do not extract the individual mod ZIPs.
 3. Open Eaglercraft **26.3** and go to the title screen.
 4. Open **Mods** → **Import mod** → **Choose a .zip or .lua file...**.
-5. Select `EaglerModAPI-0.3.0.zip`, review the install prompt, and click **Install**.
+5. Select `EaglerModAPI-0.4.0.zip`, review the install prompt, and click **Install**.
 6. In the Mods list, make sure **EaglerModAPI** is enabled.
-7. Repeat the import steps with `EaglerModAPI-TestMod-0.3.0.zip`.
+7. Repeat the import steps with `EaglerModAPI-TestMod-0.4.0.zip`.
 8. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
 9. Enter a **singleplayer** world. The HUD should show player/world details and a health bar. Run `/emapi` and `/emapi ping` to test the Commands and Events APIs.
-10. Check the test mod's **Log** if anything is missing or an error appears, then repeat in Eaglercraft **26.2**. Record exact client builds and browser versions in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
+10. Run `/emapi notify`, `/emapi timer`, `/emapi clock`, `/emapi repeat` and `/emapi stop` to test the new UI and Timer APIs.
+11. Check the test mod's **Log** if anything is missing or an error appears, then repeat in Eaglercraft **26.2**. Record exact client builds and browser versions in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
 
 **Important:** Zeus mods run on the title screen, in menus, in singleplayer and LAN worlds, and on servers. On a server, a mod runs locally for you; other players do not see its HUD or know it is running. Mod-added blocks, items and mobs only work in singleplayer and LAN worlds you open. Follow each server's rules. Only install packages you trust.
 
@@ -89,7 +89,7 @@ For the current consumer example's source files, see [examples/consumer](example
 
 ## API surface
 
-The 0.3.0 development API includes:
+The 0.4.0 development API includes:
 
 - `EaglerModAPI.getInfo()` — API and detected game-version information.
 - `EaglerModAPI.compat` — supported-version and capability checks.
@@ -98,8 +98,10 @@ The 0.3.0 development API includes:
 - `EaglerModAPI.hud` — named HUD panels, built-in HUD controls, and drawing helpers for text, panels and bars.
 - `EaglerModAPI.events` — event listeners, one-time listeners, removal and custom events.
 - `EaglerModAPI.commands` — register, remove and list local mod commands.
+- `EaglerModAPI.timer` — schedule one-shot and repeating callbacks, cancel timers, and read timer time/ticks.
+- `EaglerModAPI.ui` — show popup notifications through Zeus.
 
-The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.2.0 Player and World example was tested on both supported client versions. The new 0.3.0 HUD, Events and Commands features still need in-game testing.
+The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.3.0 example flow was reported working in both supported clients. That confirms the tested example paths, not every individual helper. The new 0.4.0 Timer and UI notification features still need in-game testing.
 
 ## Development principles
 
