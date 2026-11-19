@@ -7,5 +7,5 @@ return {
     id = "26.2",
     apiFamily = "zeus-lua",
     documentationStatus = "documented",
-    runtimeTestStatus = "0.3.0 example flow passed (user-reported 2026-11-18); 0.4.0 Timer/UI pending"
+    runtimeTestStatus = "0.3.0 and 0.4.0 example flows passed (user-reported 2026-11-19)"
 }
