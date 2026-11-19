@@ -2,7 +2,7 @@
 
 All notable project changes are recorded here.
 
-## [0.2.0] - In development
+## [0.2.0] - Preview
 
 ### Added
 - Expanded Player API for identity, position, movement, health, hunger, experience, status, dimension, biome, inventory, effects and basic actions.
@@ -15,8 +15,10 @@ All notable project changes are recorded here.
 - Documented the complete 0.2.0 public helper surface.
 
 ### Testing
-- 0.1.0 was user-reported as working in Eaglercraft 26.2 and 26.3.
-- 0.2.0 requires fresh in-game testing in both supported versions.
+- User-reported successful test of the 0.2.0 library and expanded example HUD in Eaglercraft 26.2 and 26.3 on 2026-11-18.
+- The example HUD exercised position, player name, health, max health, hunger, gamemode, dimension, biome, day and time-of-day, and weather queries.
+- Exact client build numbers and browser versions were not recorded.
+- Other helper methods still need focused tests.
 
 ## [0.1.0] - Initial preview
 
