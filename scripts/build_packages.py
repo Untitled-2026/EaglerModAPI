@@ -24,6 +24,9 @@ API_REQUIRED_FILES = (
     "src/compat/versions/v26_3.lua",
     "src/modules/player.lua",
     "src/modules/world.lua",
+    "src/modules/hud.lua",
+    "src/modules/events.lua",
+    "src/modules/commands.lua",
 )
 
 
