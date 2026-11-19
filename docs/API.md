@@ -151,6 +151,8 @@ end, "Say hello")
 
 Do not register a command name already used by another mod or a built-in command. Registering a conflicting mod command can fail, and a mod command can take precedence over the game's command with the same name.
 
+**Chat input hint:** Eaglercraft's chat input may show an “unknown or misspelled command” hint while a local mod command is being typed, even though pressing Enter runs the registered command. The documented Zeus Lua API currently provides command registration, removal and listing, but no function to add local commands to the chat autocomplete/suggestion system. This is a client-side hint limitation, not a failure of `API.commands.register`.
+
 ## Timer API
 
 The Timer API wraps Zeus's timer scheduler and passes timer handles through unchanged.
