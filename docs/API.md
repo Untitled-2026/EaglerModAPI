@@ -1,4 +1,4 @@
-# Public API (0.2.0)
+# Public API (0.3.0)
 
 Consumer mods retrieve the library after declaring `eaglermodapi` as a dependency:
 
@@ -7,21 +7,13 @@ local API = mods.get("eaglermodapi")
 assert(API, "EaglerModAPI is missing or disabled")
 ```
 
-Functions documented below wrap the corresponding Zeus API functions. Values are normalized where useful. Functions return `nil, error_code` when the player/world is unavailable, an argument is invalid, or Zeus reports an error.
+EaglerModAPI wraps the documented Zeus Lua API and adds convenience helpers. Callbacks receive the same arguments as Zeus; event data and drawing contexts are not rewritten.
 
 ## Core
 
-### `API.getInfo()`
-
-Returns a table containing `name`, `version`, `gameVersion`, `supported`, `adapter` and `verification`.
-
-### `API.getCapabilities()`
-
-Returns a table of booleans describing which underlying Zeus functions are available.
-
-### `API.hasCapability(name)`
-
-Returns `true` only when the named capability is present.
+- `API.getInfo()` — returns `name`, `version`, `gameVersion`, `supported`, `adapter` and `verification`.
+- `API.getCapabilities()` — returns booleans for the Zeus functions detected at runtime.
+- `API.hasCapability(name)` — checks one capability.
 
 ## Compatibility
 
@@ -34,60 +26,30 @@ Returns `true` only when the named capability is present.
 
 ## Player API
 
-Most player methods require an active player in a world. `exists()`, `getGamemode()` and `getLookingAt()` are safe to call without that check, matching the Zeus API reference.
-
-### Presence and identity
+Most methods require an active player in a world. `exists()`, `getGamemode()` and `getLookingAt()` can be used without that check.
 
 | Function | Returns |
 | --- | --- |
-| `API.player.exists()` | `true` if a player is available; otherwise `false`. |
-| `API.player.getName()` | Player username. |
-| `API.player.getUUID()` | Player UUID. |
-
-### Position and movement
-
-| Function | Returns |
-| --- | --- |
-| `getPosition()` | `{ x, y, z }` for the player's feet position. |
-| `getX()`, `getY()`, `getZ()` | One coordinate each. |
-| `getBlockPosition()` | `{ x, y, z }` block coordinates. |
-| `getEyePosition()` | `{ x, y, z }` eye coordinates. |
-| `getVelocity()` | `{ x, y, z }` velocity in blocks per tick. |
-| `setVelocity(x, y, z)` | Sets velocity; returns `true` on success. |
-| `getRotation()` | `{ yaw, pitch }` in degrees. |
-| `getYaw()`, `getPitch()` | Individual rotation values. |
-| `setRotation(yaw, pitch)` | Sets rotation; returns `true` on success. |
-| `getFacing()` | `"north"`, `"south"`, `"east"` or `"west"`. |
-
-### Player status
-
-| Function | Returns |
-| --- | --- |
-| `getHealth()`, `getMaxHealth()` | Current and maximum health (20 is ten hearts). |
-| `getFood()`, `getSaturation()` | Hunger and saturation. |
-| `getArmor()` | Armor points. |
-| `getXPLevel()`, `getXPProgress()` | Experience level and progress (0 to 1). |
-| `isOnGround()` | Whether the player is on the ground. |
-| `isSneaking()`, `isSprinting()` | Movement state. |
-| `isSwimming()`, `isFlying()` | Movement state. |
-| `setSprinting(enabled)` | Starts/stops sprinting; `enabled` must be boolean. |
-| `getGamemode()` | `"survival"`, `"creative"`, `"adventure"`, `"spectator"` or `nil`. |
-| `getDimension()` | Dimension ID, such as `"minecraft:overworld"`. |
-| `getBiome()` | Current biome ID, or `nil`. |
-
-### Inventory and actions
-
-| Function | Returns |
-| --- | --- |
-| `getHeldItem()`, `getOffhandItem()` | Item table or `nil` for an empty hand. |
-| `getSelectedSlot()` | Selected hotbar slot (1 to 9). |
-| `selectSlot(slot)` | Selects a hotbar slot from 1 to 9; returns `true` on success. |
-| `getInventory()` | List of non-empty inventory items. |
-| `getEffects()` | List of active status effects. |
+| `exists()` | Whether a player is present. |
+| `getName()`, `getUUID()` | Player identity. |
+| `getPosition()`, `getBlockPosition()`, `getEyePosition()`, `getVelocity()` | Named vector table: `{ x, y, z }`. |
+| `getX()`, `getY()`, `getZ()` | Individual position coordinates. |
+| `setVelocity(x, y, z)` | Sets velocity. |
+| `getRotation()` | `{ yaw, pitch }`. |
+| `getYaw()`, `getPitch()`, `getFacing()` | View direction. |
+| `setRotation(yaw, pitch)` | Sets view direction. |
+| `getHealth()`, `getMaxHealth()`, `getFood()`, `getSaturation()`, `getArmor()` | Player status values. |
+| `getXPLevel()`, `getXPProgress()` | Experience level and progress. |
+| `isOnGround()`, `isSneaking()`, `isSprinting()`, `isSwimming()`, `isFlying()` | Movement state. |
+| `setSprinting(enabled)` | Sets sprinting state. |
+| `getGamemode()`, `getDimension()`, `getBiome()` | Current player context. |
+| `getHeldItem()`, `getOffhandItem()`, `getSelectedSlot()`, `getInventory()` | Inventory information. |
+| `selectSlot(slot)` | Selects hotbar slot 1 through 9. |
+| `getEffects()` | Active status effects. |
 | `getLookingAt()` | Block/entity information or `nil`. |
-| `jump()`, `swing()` | Performs the action; returns `true` on success. |
+| `jump()`, `swing()` | Performs the corresponding player action. |
 
-Zeus item tables contain `id`, `count`, `name`, `damage` and `maxDamage`. Inventory items also contain `slot`. Status effects contain `id`, `amplifier` and `duration` in ticks. `getLookingAt()` returns a typed block or entity table; see the official Zeus API reference for its fields.
+See the [Zeus API reference](https://dev.eaglercraft.com/docs/modding/api) for the original data fields returned by player and inventory functions.
 
 ## World API
 
@@ -95,28 +57,104 @@ World methods other than `exists()` require an active world.
 
 | Function | Returns |
 | --- | --- |
-| `API.world.exists()` | `true` when in a world; otherwise `false`. |
-| `getBlock(x, y, z)` | Block ID at the position. |
-| `getLight(x, y, z)` | Light level (0 to 15). |
-| `getBiomeAt(x, y, z)` | Biome ID or `nil`. |
-| `getTime()` | World clock in ticks. |
-| `getDay()` | Day number. |
-| `getTimeOfDay()` | Time within the day (0 to 23999). |
+| `exists()` | Whether a world is active. |
+| `getBlock(x, y, z)` | Block ID at a position. |
+| `getLight(x, y, z)` | Light level from 0 to 15. |
+| `getBiomeAt(x, y, z)` | Biome ID. |
+| `getTime()`, `getDay()`, `getTimeOfDay()` | World clock information. |
 | `getWeather()` | `"clear"`, `"rain"` or `"thunder"`. |
-| `getPlayers()` | List of players in the world, including you. |
+| `getPlayers()` | Players in the world, including you. |
 | `getEntities(radius)` | Nearby entities, excluding you; radius defaults to 64 and Zeus returns at most 512. |
 
-World block/light/biome functions require numeric coordinates. `getEntities` accepts an optional positive numeric radius.
+## HUD API
 
-## Error handling
+The HUD API wraps Zeus's HUD functions and provides reusable drawing helpers. Zeus calls a panel callback with `ctx` and `partialTick` every frame. The HUD is only drawn while in a world.
 
-- `nil, "player_unavailable"`: a player-dependent method was called without a player.
-- `nil, "world_unavailable"`: a world-dependent method was called outside a world.
-- `nil, "zeus_function_unavailable: ..."`: the expected Zeus function is not exposed.
-- Argument errors use descriptive strings such as `"coordinates_must_be_numbers"`.
+### Register and remove panels
 
-Action methods return `true` when the Zeus call succeeds, or `nil, error_code` when it cannot be completed.
+```lua
+API.hud.add("my_panel", function(ctx, partialTick)
+    API.hud.drawPanel(ctx, 4, 4, 120, 32)
+    API.hud.drawText(ctx, "Hello HUD", 10, 10)
+end)
+
+API.hud.remove("my_panel")
+```
+
+- `API.hud.add(callback, options?)`
+- `API.hud.add(name, callback, options?)`
+- `API.hud.remove(name)` — calls Zeus `hud.removeLayer`.
+
+Options support Zeus's `before` and `after` placement fields.
+
+### Draw helpers
+
+- `API.hud.drawText(ctx, text, x, y, options?)` — options: `color`, `shadow`.
+- `API.hud.drawPanel(ctx, x, y, width, height, options?)` — options: `background`, `border`.
+- `API.hud.drawBar(ctx, x, y, width, height, value, maximum, options?)` — options: `background`, `fill`, `border`. The ratio is clamped between 0 and 1.
+
+These helpers use the documented Zeus drawing context methods `ctx:text`, `ctx:rect` and `ctx:outline`. Coordinates are GUI pixels.
+
+### Modify built-in HUD elements
+
+- `API.hud.before(elementId, callback)`
+- `API.hud.after(elementId, callback)`
+- `API.hud.hide(elementId)`
+- `API.hud.show(elementId)`
+- `API.hud.replace(elementId, callback)` — callback receives `ctx, partialTick, drawOriginal`.
+- `API.hud.isHidden(elementId)`
+- `API.hud.elements()`
+
+Use element IDs returned by `API.hud.elements()`. For example, `"hotbar"`, `"crosshair"`, `"player_health"` and `"chat"`.
+
+## Events API
+
+The Events API passes event callback arguments through unchanged from Zeus.
+
+- `API.events.on(name, callback, priority?)` — listens every time the event fires.
+- `API.events.once(name, callback, priority?)` — listens only for the next occurrence.
+- `API.events.off(handle)` — removes a listener using its handle.
+- `API.events.emit(name, ...)` — emits a custom event to mods, including your own.
+
+Priority must be a whole number; the default is 0 and higher priorities run first among listeners in your mod. The handle returned by `on` or `once` also supports Zeus's `:remove()` method.
+
+Example:
+
+```lua
+local handle = API.events.on("world_join", function(event)
+    chat.print("Joined a world!")
+end)
+
+-- Later:
+API.events.off(handle)
+```
+
+Custom event names should start with your mod ID to avoid collisions, for example `"my_mod:ready"`. Zeus custom events run synchronously and cannot be cancelled. For normal cancellable events, call `event:cancel()` only when the event documentation says it can be cancelled.
+
+## Commands API
+
+Commands are local mod commands; they are not sent to the multiplayer server.
+
+- `API.commands.register(name, callback, description?)`
+- `API.commands.unregister(name)`
+- `API.commands.list()`
+
+The callback receives `args` (a list of words) and `raw` (the full text following the command name).
+
+Example:
+
+```lua
+API.commands.register("helloapi", function(args, raw)
+    chat.print("Hello, " .. (args[1] or "player"))
+end, "Say hello")
+```
+
+Do not register a command name already used by another mod or a built-in command. Registering a conflicting mod command can fail, and a mod command can take precedence over the game's command with the same name.
+
+## Errors
+
+Wrapper methods return `nil, error_code` when validation fails, the required game context is missing, or the Zeus function is unavailable. Registration functions return `true` on success. Event listener registration returns the native Zeus handle.
 
 ## Compatibility note
 
-This API is designed against the shared Zeus API reference for Eaglercraft 26.2 and 26.3. The new 0.2.0 functions still need in-game testing in both versions. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
+0.3.0 is designed against the shared Zeus API reference for Eaglercraft 26.2 and 26.3. The new HUD, Events and Commands wrappers must be tested in both clients before being marked verified. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
