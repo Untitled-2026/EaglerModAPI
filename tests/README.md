@@ -42,6 +42,10 @@ The main 0.3.0 example flow was reported passing in both target clients on 2026-
 10. Check both Mods menu Logs for load errors.
 11. Repeat all checks in Eaglercraft 26.2 and 26.3 separately.
 
+## Command input hint
+
+When typing a registered local mod command, Eaglercraft may show an "unknown or misspelled command" hint before Enter is pressed. Submit the command to confirm it executes. The current documented Zeus API does not provide a supported autocomplete/suggestion registration function, so this hint is a client UI limitation rather than a command dispatch failure.
+
 ## Additional API checks
 
 These checks can be done with a small temporary test mod or in the in-game editor:
