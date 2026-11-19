@@ -47,7 +47,7 @@ GitHub Actions automatically validates the metadata and builds both installable 
 
 To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.2.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
 
-The direct links in the Downloads section above are the checked-in 0.1.0 preview packages. To test the current 0.2.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
+To test the current 0.2.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
 
 ## Install and test in Eaglercraft
 
