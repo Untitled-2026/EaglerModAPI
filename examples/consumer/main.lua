@@ -41,7 +41,7 @@ API.hud.add("eaglermodapi_example", function(ctx)
         border = "#6677AAFF"
     })
 
-    API.hud.drawText(ctx, "EaglerModAPI 0.3.0 | " .. display(name), 10, 10, {
+    API.hud.drawText(ctx, "EaglerModAPI " .. info.version .. " | " .. display(name), 10, 10, {
         color = "#55FF55"
     })
     API.hud.drawText(
@@ -92,10 +92,89 @@ API.events.on("eaglermodapi_example:ping", function(message)
     chat.print("[EaglerModAPI event] " .. tostring(message))
 end)
 
--- Demonstrate mod-local commands. These commands are not sent to the server.
+local repeatingTimer = nil
+
+-- Clean up the repeating timer if this mod is unloaded.
+API.events.on("unload", function()
+    if repeatingTimer then
+        API.timer.cancel(repeatingTimer)
+        repeatingTimer = nil
+    end
+end)
+
+-- Demonstrate mod-local commands for all current example modules.
 API.commands.register("emapi", function(args, raw)
-    if args[1] == "ping" then
+    local command = args[1]
+
+    if command == "ping" then
         API.events.emit("eaglermodapi_example:ping", "Custom event fired successfully!")
+        return
+    end
+
+    if command == "notify" then
+        local ok, err = API.ui.notify("EaglerModAPI notification", "The UI notification helper works.")
+        if ok then
+            chat.print("Notification displayed.")
+        else
+            chat.print("Notification failed: " .. tostring(err))
+        end
+        return
+    end
+
+    if command == "timer" then
+        local handle, err = API.timer.after(2, function()
+            local ok, notifyError = API.ui.notify("EaglerModAPI timer", "The 2-second timer fired.")
+            if not ok then
+                chat.print("Timer notification failed: " .. tostring(notifyError))
+            end
+        end)
+        if handle then
+            chat.print("A notification is scheduled for about two seconds from now.")
+        else
+            chat.print("Could not schedule timer: " .. tostring(err))
+        end
+        return
+    end
+
+    if command == "repeat" then
+        if repeatingTimer and API.timer.isActive(repeatingTimer) then
+            chat.print("A repeating timer is already running. Use /emapi stop to cancel it.")
+            return
+        end
+
+        local handle, err = API.timer.every(5, function()
+            API.ui.notify("EaglerModAPI repeating timer", "Five seconds have passed.")
+        end)
+        if handle then
+            repeatingTimer = handle
+            chat.print("Repeating notification started. Use /emapi stop to cancel it.")
+        else
+            chat.print("Could not start repeating timer: " .. tostring(err))
+        end
+        return
+    end
+
+    if command == "stop" then
+        if not repeatingTimer then
+            chat.print("No repeating timer is running.")
+            return
+        end
+
+        local ok, err = API.timer.cancel(repeatingTimer)
+        if ok then
+            repeatingTimer = nil
+            chat.print("Repeating timer cancelled.")
+        else
+            chat.print("Could not cancel timer: " .. tostring(err))
+        end
+        return
+    end
+
+    if command == "clock" then
+        local currentTime, timeError = API.timer.time()
+        local currentTicks, ticksError = API.timer.ticks()
+        chat.print("Timer time: " .. display(currentTime or timeError))
+        chat.print("Game ticks: " .. display(currentTicks or ticksError))
         return
     end
 
@@ -108,5 +187,5 @@ API.commands.register("emapi", function(args, raw)
     else
         chat.print("Position unavailable (join a world first).")
     end
-    chat.print("Use /emapi ping to test the custom event API.")
-end, "Show API information; use /emapi ping to test events")
+    chat.print("Try /emapi notify, timer, repeat, stop or clock; use /emapi ping for events.")
+end, "Test the EaglerModAPI modules with local subcommands")
