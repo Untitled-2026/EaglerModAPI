@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** EaglerModAPI 0.2.0 has been user-tested successfully in Eaglercraft 26.2 and 26.3. The expanded example HUD confirms the position, health, hunger, gamemode, dimension, biome, weather and world-time display paths; further testing is still needed for every individual helper.
+> **Status:** EaglerModAPI 0.3.0 is in development. Version 0.2.0 was user-tested successfully in Eaglercraft 26.2 and 26.3. The new HUD, Events and Commands modules are awaiting in-game testing.
 
 ## Goals
 
@@ -51,15 +51,15 @@ To test the current 0.2.0 development build, download the newest successful buil
 
 ## Install and test in Eaglercraft
 
-1. For the latest 0.2.0 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
+1. For the latest 0.3.0 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
 2. Extract the outer artifact ZIP. It contains two mod ZIPs and a checksum file; do not extract the individual mod ZIPs.
 3. Open Eaglercraft **26.3** and go to the title screen.
 4. Open **Mods** → **Import mod** → **Choose a .zip or .lua file...**.
-5. Select `EaglerModAPI-0.2.0.zip`, review the install prompt, and click **Install**.
+5. Select `EaglerModAPI-0.3.0.zip`, review the install prompt, and click **Install**.
 6. In the Mods list, make sure **EaglerModAPI** is enabled.
-7. Repeat the import steps with `EaglerModAPI-TestMod-0.2.0.zip`.
+7. Repeat the import steps with `EaglerModAPI-TestMod-0.3.0.zip`.
 8. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
-9. Enter a **singleplayer** world. The test HUD should show your coordinates, health, hunger, gamemode, dimension, biome, weather and world time.
+9. Enter a **singleplayer** world. The HUD should show player/world details and a health bar. Run `/emapi` and `/emapi ping` to test the Commands and Events APIs.
 10. Check the test mod's **Log** if anything is missing or an error appears, then repeat in Eaglercraft **26.2**. Record exact client builds and browser versions in [tests/COMPATIBILITY-MATRIX.md](tests/COMPATIBILITY-MATRIX.md).
 
 **Important:** Zeus mods run on the title screen, in menus, in singleplayer and LAN worlds, and on servers. On a server, a mod runs locally for you; other players do not see its HUD or know it is running. Mod-added blocks, items and mobs only work in singleplayer and LAN worlds you open. Follow each server's rules. Only install packages you trust.
@@ -89,14 +89,17 @@ For the current consumer example's source files, see [examples/consumer](example
 
 ## API surface
 
-The 0.2.0 development API includes:
+The 0.3.0 development API includes:
 
 - `EaglerModAPI.getInfo()` — API and detected game-version information.
 - `EaglerModAPI.compat` — supported-version and capability checks.
 - `EaglerModAPI.player` — normalized identity, position, movement, health, hunger, XP, status, inventory and player-action helpers.
 - `EaglerModAPI.world` — normalized block, light, biome, time, weather, player-list and nearby-entity helpers.
+- `EaglerModAPI.hud` — named HUD panels, built-in HUD controls, and drawing helpers for text, panels and bars.
+- `EaglerModAPI.events` — event listeners, one-time listeners, removal and custom events.
+- `EaglerModAPI.commands` — register, remove and list local mod commands.
 
-The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The example HUD has been tested by the project maintainer on both supported client versions; functions not used by that example remain to be tested individually.
+The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.2.0 Player and World example was tested on both supported client versions. The new 0.3.0 HUD, Events and Commands features still need in-game testing.
 
 ## Development principles
 
