@@ -2,7 +2,24 @@
 
 All notable project changes are recorded here.
 
-## [0.4.0] - In development
+## [0.5.0] - In development
+
+### Added
+- Settings API wrappers for toggles, sliders, choices, text, key, color and button settings.
+- Settings access helpers for get, set, reset, list, change callbacks and opening the settings page.
+- Keybind API wrappers for configurable keybinds and keyboard-state/name/code helpers.
+- Persistent Storage API helpers with validation for serializable values and optional immediate saving.
+- Example HUD preferences, a configurable H-key HUD toggle, and a persistent toggle counter.
+- Runtime capability detection for Settings, Keybinds, persistent Storage and manual saving.
+
+### Changed
+- Bumped the library and example package metadata to 0.5.0.
+- Updated the public API documentation and manual test checklist.
+
+### Testing
+- 0.5.0 is awaiting in-game testing in Eaglercraft 26.2 and 26.3.
+
+## [0.4.0] - Tested preview
 
 ### Added
 - Timer API wrappers for one-shot and repeating timers, cancellation, active-state checks, elapsed time and game ticks.
