@@ -15,7 +15,8 @@ All notable project changes are recorded here.
 - Updated the API documentation and manual test checklist.
 
 ### Testing
-- 0.4.0 is awaiting in-game testing in Eaglercraft 26.2 and 26.3.
+- User-reported successful testing in Eaglercraft 26.2 and 26.3 on 2026-11-19.
+- Command input may still display an unknown-command hint before submission; registered local commands execute successfully. The current documented Zeus Lua API has no command autocomplete/suggestion registration function.
 
 ## [0.3.0] - Tested preview
 
