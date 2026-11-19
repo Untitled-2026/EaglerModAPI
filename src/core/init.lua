@@ -6,10 +6,13 @@ local events = require("src.modules.events")
 local commands = require("src.modules.commands")
 local timer = require("src.modules.timer")
 local ui = require("src.modules.ui")
+local settings = require("src.modules.settings")
+local keys = require("src.modules.keys")
+local storage = require("src.modules.storage")
 
 local API = {
     name = "EaglerModAPI",
-    version = "0.4.0",
+    version = "0.5.0",
     compat = compat,
     player = player,
     world = world,
@@ -17,7 +20,10 @@ local API = {
     events = events,
     commands = commands,
     timer = timer,
-    ui = ui
+    ui = ui,
+    settings = settings,
+    keys = keys,
+    storage = storage
 }
 
 function API.getInfo()
