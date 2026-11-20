@@ -28,7 +28,7 @@ All notable project changes are recorded here.
 - Updated the public API documentation and manual test checklist.
 
 ### Testing
-- 0.5.0 is awaiting in-game testing in Eaglercraft 26.2 and 26.3.
+- First test step exposed that settings appeared under EaglerModAPI instead of the consumer test mod. No full 0.5.0 test was completed; the issue was fixed in 0.5.1.
 
 ## [0.4.0] - Tested preview
 
