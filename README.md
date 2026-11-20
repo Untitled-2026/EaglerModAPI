@@ -18,8 +18,8 @@ EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding 
 
 | Eaglercraft | Status | Notes |
 | --- | --- | --- |
-| 26.2 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 settings ownership issue reported; 0.5.1 pending. |
-| 26.3 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 settings ownership issue reported; 0.5.1 pending. |
+| 26.2 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 scope issue reported (client version unspecified); 0.5.1 pending. |
+| 26.3 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 scope issue reported (client version unspecified); 0.5.1 pending. |
 | Other versions | Unsupported | No compatibility promise yet. |
 
 The official Zeus documentation currently presents a shared modding API reference for 26.2 and 26.3. That does **not** replace testing against both clients.
