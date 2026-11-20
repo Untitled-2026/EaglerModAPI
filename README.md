@@ -4,7 +4,7 @@
 
 EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding system. Its goal is to give mod developers a consistent, documented interface across Eaglercraft 26.2 and 26.3, while adding reusable helpers that Zeus does not provide directly.
 
-> **Status:** EaglerModAPI 0.5.0 is in development. Versions 0.3.0 and 0.4.0 were user-tested successfully in Eaglercraft 26.2 and 26.3. The 0.5.0 Settings, Keybinds and Storage additions are awaiting in-game testing.
+> **Status:** EaglerModAPI 0.5.1 is in development. Versions 0.3.0 and 0.4.0 were user-tested successfully in Eaglercraft 26.2 and 26.3. Version 0.5.0 exposed a per-mod context issue: consumer settings were registered under the library mod. Version 0.5.1 fixes this by explicitly binding Settings, Keybinds and Storage to the consuming mod; these changes need in-game testing.
 
 ## Goals
 
@@ -18,8 +18,8 @@ EaglerModAPI is a Lua library mod that sits on top of the built-in Zeus modding 
 
 | Eaglercraft | Status | Notes |
 | --- | --- | --- |
-| 26.2 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 pending. |
-| 26.3 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 pending. |
+| 26.2 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 settings ownership issue reported; 0.5.1 pending. |
+| 26.3 | 0.4.0 user-tested (reported) | 0.3.0 and 0.4.0 example flows passed; 0.5.0 settings ownership issue reported; 0.5.1 pending. |
 | Other versions | Unsupported | No compatibility promise yet. |
 
 The official Zeus documentation currently presents a shared modding API reference for 26.2 and 26.3. That does **not** replace testing against both clients.
@@ -46,17 +46,17 @@ GitHub Actions automatically validates the metadata and builds both installable 
 
 To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.3.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
 
-To test the current 0.5.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
+To test the current 0.5.1 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
 
 ## Install and test in Eaglercraft
 
-1. For the latest 0.5.0 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
+1. For the latest 0.5.1 test, open the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml), select the newest successful run, and download its `EaglerModAPI-packages-...` artifact.
 2. Extract the outer artifact ZIP. It contains two mod ZIPs and a checksum file; do not extract the individual mod ZIPs.
 3. Open Eaglercraft **26.3** and go to the title screen.
 4. Open **Mods** → **Import mod** → **Choose a .zip or .lua file...**.
-5. Select `EaglerModAPI-0.5.0.zip`, review the install prompt, and click **Install**.
+5. Select `EaglerModAPI-0.5.1.zip`, review the install prompt, and click **Install**.
 6. In the Mods list, make sure **EaglerModAPI** is enabled.
-7. Repeat the import steps with `EaglerModAPI-TestMod-0.5.0.zip`.
+7. Repeat the import steps with `EaglerModAPI-TestMod-0.5.1.zip`.
 8. Make sure **EaglerModAPI Test Mod** is enabled. It lists EaglerModAPI as a dependency.
 9. Enter a **singleplayer** world. The HUD should show player/world details and a health bar. Run `/emapi` and `/emapi ping` to test the Commands and Events APIs.
 10. Run `/emapi notify`, `/emapi timer`, `/emapi clock`, `/emapi repeat` and `/emapi stop` to test the UI and Timer APIs. Open the test mod's Settings page to change HUD settings and its keybind; press the configured key to toggle the HUD, then use `/emapi prefs` and `/emapi count` to inspect preferences and saved state.
@@ -80,18 +80,28 @@ Install and enable EaglerModAPI, then declare it as a dependency in the other mo
 }
 ```
 
-Retrieve the exported API from Lua:
+Retrieve the exported API and bind the per-mod namespaces from Lua:
 
 ```lua
-local EaglerModAPI = mods.get("eaglermodapi")
-assert(EaglerModAPI, "EaglerModAPI must be installed and enabled")
+local LibraryAPI = mods.get("eaglermodapi")
+assert(LibraryAPI, "EaglerModAPI must be installed and enabled")
+
+local API, bindError = LibraryAPI.forMod({
+    settings = settings,
+    keys = keys,
+    storage = storage,
+    mod = mod
+})
+assert(API, bindError or "Could not bind EaglerModAPI to this mod")
 ```
+
+Call `forMod` once when your mod starts. This is important: Zeus settings, keybinds, storage and `mod.save()` belong to the calling mod. Binding these namespaces ensures they appear under and are saved by your own mod, not by EaglerModAPI.
 
 For the current consumer example's source files, see [examples/consumer](examples/consumer).
 
 ## API surface
 
-The 0.5.0 development API includes:
+The 0.5.1 development API includes:
 
 - `EaglerModAPI.getInfo()` — API and detected game-version information.
 - `EaglerModAPI.compat` — supported-version and capability checks.
