@@ -9,9 +9,8 @@
 | Eaglercraft 26.2 | 0.4.0 | Not recorded | Not recorded | 2026-11-19 | Pass (user-reported) | Timer, UI notification and test-mod example reported working. |
 | Eaglercraft 26.3 | 0.4.0 | Not recorded | Not recorded | 2026-11-19 | Pass (user-reported) | Timer, UI notification and test-mod example reported working. |
 
-| Eaglercraft 26.2 | 0.5.0 | Not recorded | Not recorded | 2026-11-19 | Issue reported | Settings page appeared under EaglerModAPI instead of EaglerModAPI Test Mod; remaining tests not completed. |
-| Eaglercraft 26.3 | 0.5.0 | Not tested | Not tested | — | Not tested | First-step issue reported in the 26.3 test; no separate 26.2 result was supplied. |
 
+| Client not recorded | 0.5.0 | Not recorded | Not recorded | 2026-11-19 | Issue reported | Settings page appeared under EaglerModAPI instead of EaglerModAPI Test Mod; remaining tests not completed. |
 | Eaglercraft 26.2 | 0.5.1 | Not tested | Not tested | — | Pending | Verify Settings, Keybinds and Storage are owned by the consumer test mod. |
 | Eaglercraft 26.3 | 0.5.1 | Not tested | Not tested | — | Pending | Verify Settings, Keybinds and Storage are owned by the consumer test mod. |
 
