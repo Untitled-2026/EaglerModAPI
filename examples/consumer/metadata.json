@@ -1,8 +1,8 @@
 {
   "id": "eaglermodapi_example",
   "name": "EaglerModAPI Test Mod",
-  "version": "0.5.1",
-  "description": "Tests EaglerModAPI Player, World, HUD, Events, Commands, Timer, UI notification, Settings, Keybinds and Storage modules.",
+  "version": "0.6.0",
+  "description": "Tests EaglerModAPI Player, World, HUD, Events, Commands, Timer, UI notification, Settings, Keybinds, Storage, Game, Camera, Mouse and Sound modules.",
   "authors": ["Untitled-2026"],
   "main": "main.lua",
   "api": 1,
