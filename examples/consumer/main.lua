@@ -130,7 +130,7 @@ API.hud.add("eaglermodapi_example", function(ctx)
         x = math.max(4, ctx.width - width - 4)
     end
     if corner:find("Bottom") and type(ctx.height) == "number" then
-        y = math.max(4, ctx.height - 95)
+        y = math.max(4, ctx.height - 106)
     end
 
     local position = API.player.getPosition()
@@ -156,12 +156,12 @@ API.hud.add("eaglermodapi_example", function(ctx)
     local timeOfDay = API.world.getTimeOfDay()
     local weather = API.world.getWeather()
 
-    API.hud.drawPanel(ctx, x, y, width, 91, {
+    API.hud.drawPanel(ctx, x, y, width, 102, {
         background = "#99000000",
         border = "#6677AAFF"
     })
 
-    API.hud.drawText(ctx, prefix .. " 0.5.1 | " .. display(name), x + 6, y + 6, {
+    API.hud.drawText(ctx, prefix .. " 0.6.0 | " .. display(name), x + 6, y + 6, {
         color = titleColor
     })
     API.hud.drawText(
@@ -199,6 +199,15 @@ API.hud.add("eaglermodapi_example", function(ctx)
         ctx,
         "Day: " .. display(day) .. " | Time: " .. display(timeOfDay),
         x + 6, y + 73
+    )
+    local fps = API.game.getFPS()
+    local cameraRotation = API.camera.getRotation()
+    API.hud.drawText(
+        ctx,
+        "FPS: " .. display(fps) .. " | View: "
+            .. display(cameraRotation and cameraRotation.yaw) .. "/"
+            .. display(cameraRotation and cameraRotation.pitch),
+        x + 6, y + 84
     )
 end)
 
@@ -298,6 +307,60 @@ API.commands.register("emapi", function(args, raw)
         return
     end
 
+    if command == "inspect" then
+        local size = API.game.getSize()
+        local cameraPosition = API.camera.getPosition()
+        local cameraRotation = API.camera.getRotation()
+        local mousePosition = API.mouse.getPosition()
+
+        chat.print("FPS: " .. display(API.game.getFPS()))
+        chat.print("Screen: " .. display(API.game.getScreen()))
+        chat.print("Canvas: " .. display(size and size.width) .. " x " .. display(size and size.height))
+        chat.print("Camera: " .. display(cameraPosition and cameraPosition.x) .. ", "
+            .. display(cameraPosition and cameraPosition.y) .. ", "
+            .. display(cameraPosition and cameraPosition.z))
+        chat.print("Camera yaw/pitch: " .. display(cameraRotation and cameraRotation.yaw)
+            .. " / " .. display(cameraRotation and cameraRotation.pitch))
+        chat.print("Mouse: " .. display(mousePosition and mousePosition.x)
+            .. ", " .. display(mousePosition and mousePosition.y))
+        return
+    end
+
+    if command == "sound" then
+        local result, err = API.sound.play("entity.experience_orb.pickup")
+        if result then
+            chat.print("Game sound played.")
+        else
+            chat.print("Sound failed: " .. tostring(err))
+        end
+        return
+    end
+
+    if command == "chat" then
+        local ok, err = API.game.openChat("/emapi ping")
+        if ok then
+            chat.print("Chat opened with /emapi ping prefilled. Press Enter to run it.")
+        else
+            chat.print("Could not open chat: " .. tostring(err))
+        end
+        return
+    end
+
+    if command == "optioncheck" then
+        local fov, readError = API.game.getOption("fov")
+        if fov == nil then
+            chat.print("Could not read FOV: " .. tostring(readError))
+            return
+        end
+        local ok, setError = API.game.setOption("fov", fov)
+        if ok then
+            chat.print("Game option read/write check passed. Current FOV: " .. tostring(fov))
+        else
+            chat.print("Game option write failed: " .. tostring(setError))
+        end
+        return
+    end
+
     if command == "prefs" then
         chat.print("HUD enabled: " .. display(API.settings.get("hudEnabled")))
         chat.print("HUD corner: " .. display(API.settings.get("hudCorner")))
@@ -331,5 +394,5 @@ API.commands.register("emapi", function(args, raw)
     else
         chat.print("Position unavailable (join a world first).")
     end
-    chat.print("Try /emapi prefs, count or resetcount; use /emapi notify, timer, repeat, stop, clock or ping.")
+    chat.print("Try /emapi inspect, sound, chat or optioncheck; /emapi prefs, count, resetcount, notify, timer, repeat, stop, clock and ping.")
 end, "Test the EaglerModAPI modules with local subcommands")
