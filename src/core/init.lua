@@ -9,10 +9,14 @@ local ui = require("src.modules.ui")
 local settingsModule = require("src.modules.settings")
 local keysModule = require("src.modules.keys")
 local storageModule = require("src.modules.storage")
+local gameModule = require("src.modules.game")
+local cameraModule = require("src.modules.camera")
+local mouseModule = require("src.modules.mouse")
+local soundModule = require("src.modules.sound")
 
 local API = {
     name = "EaglerModAPI",
-    version = "0.5.1",
+    version = "0.6.0",
     compat = compat,
     player = player,
     world = world,
@@ -23,7 +27,11 @@ local API = {
     ui = ui,
     settings = settingsModule,
     keys = keysModule,
-    storage = storageModule
+    storage = storageModule,
+    game = gameModule,
+    camera = cameraModule,
+    mouse = mouseModule,
+    sound = soundModule
 }
 
 function API.getInfo()
