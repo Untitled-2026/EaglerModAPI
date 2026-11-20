@@ -83,6 +83,25 @@ function Probe.all()
         timerTicks = hasFunction(timer, "ticks"),
         uiNotify = hasFunction(ui, "notify"),
 
+        gameFPS = hasFunction(game, "fps"),
+        gameSize = hasFunction(game, "width") and hasFunction(game, "height"),
+        gameScale = hasFunction(game, "scale"),
+        gameState = hasFunction(game, "isPaused")
+            and hasFunction(game, "inWorld")
+            and hasFunction(game, "isSingleplayer"),
+        gameScreen = hasFunction(game, "screen"),
+        gameOptions = hasFunction(game, "option") and hasFunction(game, "setOption"),
+        gameOpenChat = hasFunction(game, "openChat"),
+
+        cameraPosition = hasFunction(camera, "pos"),
+        cameraRotation = hasFunction(camera, "yaw") and hasFunction(camera, "pitch"),
+        cameraProject = hasFunction(camera, "project"),
+
+        mousePosition = hasFunction(mouse, "x") and hasFunction(mouse, "y"),
+        mouseButtonState = hasFunction(mouse, "isDown"),
+
+        soundPlay = hasFunction(sound, "play"),
+
         keysBind = hasFunction(keys, "bind"),
         keysIsDown = hasFunction(keys, "isDown"),
         keysCode = hasFunction(keys, "code"),
