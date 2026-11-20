@@ -1,5 +1,15 @@
-local API = mods.get("eaglermodapi")
-assert(API, "Enable the EaglerModAPI dependency before this example")
+local LibraryAPI = mods.get("eaglermodapi")
+assert(LibraryAPI, "Enable the EaglerModAPI dependency before this example")
+
+-- Bind the helpers to this test mod's own Zeus namespaces.
+-- This makes settings, keybinds and saved data belong to the test mod.
+local API, bindError = LibraryAPI.forMod({
+    settings = settings,
+    keys = keys,
+    storage = storage,
+    mod = mod
+})
+assert(API, bindError or "Could not bind EaglerModAPI to this mod")
 
 local info = API.getInfo()
 chat.print("EaglerModAPI " .. info.version .. " | Eaglercraft " .. info.gameVersion)
@@ -151,7 +161,7 @@ API.hud.add("eaglermodapi_example", function(ctx)
         border = "#6677AAFF"
     })
 
-    API.hud.drawText(ctx, prefix .. " 0.5.0 | " .. display(name), x + 6, y + 6, {
+    API.hud.drawText(ctx, prefix .. " 0.5.1 | " .. display(name), x + 6, y + 6, {
         color = titleColor
     })
     API.hud.drawText(
