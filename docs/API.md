@@ -1,11 +1,21 @@
-# Public API (0.5.0)
+# Public API (0.5.1)
 
-Consumer mods retrieve the library after declaring `eaglermodapi` as a dependency:
+Consumer mods retrieve the library after declaring `eaglermodapi` as a dependency, then bind the per-mod Zeus namespaces:
 
 ```lua
-local API = mods.get("eaglermodapi")
-assert(API, "EaglerModAPI is missing or disabled")
+local LibraryAPI = mods.get("eaglermodapi")
+assert(LibraryAPI, "EaglerModAPI is missing or disabled")
+
+local API, bindError = LibraryAPI.forMod({
+    settings = settings,
+    keys = keys,
+    storage = storage,
+    mod = mod
+})
+assert(API, bindError or "Could not bind EaglerModAPI to this mod")
 ```
+
+Call `forMod` once when the consumer mod starts. Zeus settings, keybinds, persistent storage and `mod.save()` belong to the mod whose namespace is used. Passing the consumer's own namespaces ensures that settings are shown under that consumer's Settings page and that saved data belongs to it, not to EaglerModAPI. The returned API table shares the ordinary Player, World, HUD, Events, Commands, Timer and UI helpers, while Settings, Keybinds and Storage are bound to the supplied consumer context.
 
 EaglerModAPI wraps the documented Zeus Lua API and adds convenience helpers. Callbacks receive the same arguments as Zeus; event data and drawing contexts are not rewritten.
 
@@ -155,7 +165,7 @@ Do not register a command name already used by another mod or a built-in command
 
 ## Settings API
 
-The Settings API creates options in the mod's Settings page. Zeus saves setting values automatically.
+The Settings API creates options in the **consumer mod's** Settings page. Use the API instance returned by `LibraryAPI.forMod(...)`; the unbound library module only provides the binding factory. Zeus saves setting values automatically.
 
 - `API.settings.toggle(key, options)` — on/off setting.
 - `API.settings.slider(key, options)` — numeric setting with `min`, `max`, optional `step` and `default`.
@@ -200,7 +210,7 @@ end
 - `API.keys.code(name)` — return a key's numeric code, or `nil`.
 - `API.keys.name(code)` — return the name for a numeric key code.
 
-The `bind` options are `id` (unique within your mod), `label`, optional `description`, optional `default` key name, optional `onPress` and `onRelease` callbacks, and optional `inScreens` boolean. Keybinds automatically appear in the mod's Settings page and players can rebind them there. The selected key can be read with `API.settings.get(id)`.
+The `bind` options are `id` (unique within your mod), `label`, optional `description`, optional `default` key name, optional `onPress` and `onRelease` callbacks, and optional `inScreens` boolean. Keybinds automatically appear in the **consumer mod's** Settings page and players can rebind them there. The selected key can be read with `API.settings.get(id)`. Use the bound API instance so the keybind belongs to the consumer mod.
 
 Example:
 
@@ -218,7 +228,7 @@ API.keys.bind({
 
 ## Persistent Storage API
 
-The Storage API wraps Zeus's per-mod persistent `storage` table.
+The Storage API wraps the consumer mod's persistent `storage` table. It must be bound with `API.forMod` so data and `mod.save()` belong to that same consumer.
 
 - `API.storage.get(key, defaultValue?)` — read a value, using the default when no value exists.
 - `API.storage.set(key, value, saveImmediately?)` — set a value. Pass `true` to call `mod.save()` immediately.
@@ -275,4 +285,4 @@ Wrapper methods return `nil, error_code` when validation fails, the required gam
 
 ## Compatibility note
 
-The 0.3.0 and 0.4.0 example flows were user-reported as working in Eaglercraft 26.2 and 26.3. The Settings, Keybinds and Storage wrappers added in 0.5.0 are awaiting in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
+The 0.3.0 and 0.4.0 example flows were user-reported as working in Eaglercraft 26.2 and 26.3. The 0.5.0 preview exposed a per-mod namespace binding issue; 0.5.1 adds explicit consumer binding and awaits in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
