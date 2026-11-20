@@ -32,6 +32,10 @@ API_REQUIRED_FILES = (
     "src/modules/settings.lua",
     "src/modules/keys.lua",
     "src/modules/storage.lua",
+    "src/modules/game.lua",
+    "src/modules/camera.lua",
+    "src/modules/mouse.lua",
+    "src/modules/sound.lua",
 )
 
 
