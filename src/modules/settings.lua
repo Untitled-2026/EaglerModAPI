@@ -83,10 +83,13 @@ function Settings.bind(namespace)
     local Bound = {}
 
     local kinds = { "toggle", "slider", "choice", "text", "key", "color", "button" }
-    for _, kind in ipairs(kinds) do
-        Bound[kind] = function(key, options)
-            return define(namespace, kind, key, options)
+    local function makeDefinition(settingKind)
+        return function(key, options)
+            return define(namespace, settingKind, key, options)
         end
+    end
+    for _, kind in ipairs(kinds) do
+        Bound[kind] = makeDefinition(kind)
     end
 
     function Bound.get(key)
