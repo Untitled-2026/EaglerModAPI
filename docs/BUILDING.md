@@ -29,11 +29,11 @@ For ordinary pushes, pull requests and manual runs, the downloadable packages ap
 
 1. Update the `version` field in both mod `metadata.json` files to the same release version.
 2. Commit and push those changes to `main`.
-3. Create and push a matching version tag. For example, for version `0.5.0`:
+3. Create and push a matching version tag. For example, for version `0.6.0`:
 
    ```bash
-   git tag v0.5.0
-   git push origin v0.2.0
+   git tag v0.6.0
+   git push origin v0.6.0
    ```
 
 4. GitHub Actions validates that the tag version matches the metadata version, builds both packages, and creates a GitHub Release with the two ZIP files and checksum file attached.
@@ -51,5 +51,5 @@ python3 scripts/build_packages.py
 The packages are written to `dist/`. To check that a release tag matches the metadata version:
 
 ```bash
-python3 scripts/build_packages.py --expected-version 0.5.0
+python3 scripts/build_packages.py --expected-version 0.6.0
 ```
