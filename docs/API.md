@@ -285,7 +285,7 @@ Projected coordinates are GUI pixels.
 
 ## Sound API
 
-- `API.sound.play(id, volume?, pitch?)` — play a game sound by its sound ID. Volume and pitch default to 1.
+- `API.sound.play(id, volume?, pitch?)` — play a game sound by its sound ID. Volume and pitch default to 1. The wrapper accepts a finite non-negative volume and a finite positive pitch.
 
 Example:
 
