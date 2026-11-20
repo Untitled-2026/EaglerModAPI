@@ -2,7 +2,18 @@
 
 All notable project changes are recorded here.
 
-## [0.5.0] - In development
+## [0.5.1] - In development
+
+### Fixed
+- Settings created by consumer mods are now registered under the consumer's own Mods → Settings page instead of EaglerModAPI.
+- Keybinds and persistent storage are now scoped to the consuming mod as well.
+- Added `API.forMod({ settings, keys, storage, mod })` to bind the per-mod Zeus namespaces explicitly.
+- Updated the test mod and documentation to use the scoped API instance.
+
+### Testing
+- Awaiting in-game verification in Eaglercraft 26.2 and 26.3. The 0.5.0 test exposed the per-mod ownership bug before the remaining checklist was completed.
+
+## [0.5.0] - Superseded preview
 
 ### Added
 - Settings API wrappers for toggles, sliders, choices, text, key, color and button settings.
