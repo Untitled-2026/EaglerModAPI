@@ -2,7 +2,34 @@
 
 All notable project changes are recorded here.
 
-## [0.5.1] - In development
+## [0.6.0] - In development
+
+### Added
+- Game API wrappers for FPS, screen dimensions, GUI scale, pause/world state, active screen, validated game-option access and prefilled chat.
+- Camera API wrappers for camera position, rotation and world-to-screen projection.
+- Mouse API wrappers for cursor position and left/right/middle button state.
+- Sound API wrapper for playing game sounds with optional volume and pitch.
+- Example HUD now shows FPS and camera direction; example commands test game state, camera, mouse, sound, prefilled chat and a no-change option read/write.
+
+### Changed
+- Bumped the library and example package metadata to 0.6.0.
+- Extended capability detection, package validation, API docs and manual test instructions.
+
+### Testing
+- 0.6.0 is awaiting in-game testing in Eaglercraft 26.2 and 26.3.
+
+## [0.5.1] - Tested preview
+
+### Fixed
+- Settings created by consumer mods are registered under the consumer's own Mods → Settings page instead of EaglerModAPI.
+- Keybinds and persistent storage are scoped to the consuming mod.
+- Added `API.forMod({ settings, keys, storage, mod })` to bind per-mod Zeus namespaces explicitly.
+- Updated the test mod and docs to use the scoped API instance.
+
+### Testing
+- User-reported successful test of the Settings, Keybinds and Storage example flow in Eaglercraft 26.2 and 26.3 on 2026-11-19.
+
+## [0.5.0] - Superseded preview
 
 ### Fixed
 - Settings created by consumer mods are now registered under the consumer's own Mods → Settings page instead of EaglerModAPI.
@@ -11,7 +38,7 @@ All notable project changes are recorded here.
 - Updated the test mod and documentation to use the scoped API instance.
 
 ### Testing
-- Awaiting in-game verification in Eaglercraft 26.2 and 26.3. The 0.5.0 test exposed the per-mod ownership bug before the remaining checklist was completed.
+- User-reported successful testing of the fixed per-mod Settings, Keybinds and Storage flows in Eaglercraft 26.2 and 26.3 on 2026-11-19.
 
 ## [0.5.0] - Superseded preview
 
