@@ -42,12 +42,12 @@ The main 0.3.0 example flow was reported passing in both target clients on 2026-
 10. Check both Mods menu Logs for load errors.
 11. Repeat all checks in Eaglercraft 26.2 and 26.3 separately.
 
-## 0.5.0 Settings, Keybinds and Storage test
+## 0.5.1 Settings, Keybinds and Storage test
 
 1. Download the newest successful **Build Zeus mod packages** artifact from GitHub Actions.
 2. Extract the outer artifact ZIP; do not extract either mod ZIP inside it.
-3. Import and enable EaglerModAPI 0.5.0, then import and enable EaglerModAPI Test Mod 0.5.0.
-4. Open Mods → EaglerModAPI Test Mod → Settings.
+3. Import and enable EaglerModAPI 0.5.1, then import and enable EaglerModAPI Test Mod 0.5.1.
+4. Confirm **EaglerModAPI** itself does not have the test mod's settings. Open Mods → EaglerModAPI Test Mod → Settings and confirm the HUD controls appear there.
 5. Change the HUD title, position, width and title color. Confirm the HUD updates to match.
 6. Turn off **Show status HUD** in Settings and confirm the panel disappears; turn it back on.
 7. Find **Toggle status HUD** in the same settings page and change its key from H to another key.
@@ -83,4 +83,4 @@ These checks can be done with a small temporary test mod or in the in-game edito
 
 ## Reporting
 
-Record results in `COMPATIBILITY-MATRIX.md`. Include client build, browser, test date, result, and notes. Mark 0.5.0 as verified only after its Settings, Keybinds and Storage checklist has passed on that client version. Mark individual helper methods as tested only after they have been checked directly.
+Record results in `COMPATIBILITY-MATRIX.md`. Include client build, browser, test date, result, and notes. Mark 0.5.1 as verified only after its Settings, Keybinds and Storage checklist has passed on that client version. Mark individual helper methods as tested only after they have been checked directly.
