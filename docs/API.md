@@ -1,4 +1,4 @@
-# Public API (0.5.1)
+# Public API (0.6.0)
 
 Consumer mods retrieve the library after declaring `eaglermodapi` as a dependency, then bind the per-mod Zeus namespaces:
 
@@ -245,6 +245,54 @@ local visits = API.storage.get("visits", 0)
 API.storage.set("visits", visits + 1, true)
 ```
 
+## Game API
+
+The Game API provides read access to client state and validated access to documented game options.
+
+- `API.game.getFPS()` — current frames per second.
+- `API.game.getWidth()`, `API.game.getHeight()`, `API.game.getSize()` — GUI dimensions.
+- `API.game.getScale()` — current GUI scale.
+- `API.game.isPaused()`, `API.game.inWorld()`, `API.game.isSingleplayer()` — current game state.
+- `API.game.getScreen()` — current screen ID, or `nil`.
+- `API.game.getOption(name)` — read a supported game option.
+- `API.game.setOption(name, value)` — change a supported game option after validating its type and range.
+- `API.game.openChat(text?)` — open chat, optionally with text prefilled. It does not send the text.
+
+Supported game options are `fov` (integer 30–110), `gamma` / `brightness` (0–1), `renderDistance` (integer, at least 2), `sensitivity` (0–1), `viewBobbing` (boolean), `fovEffects` (0–1), `framerateLimit` (10–260 in steps of 10), `chatOpacity` (0–1), `subtitles` (boolean), `masterVolume` and `musicVolume` (0–1). `guiScale` is read-only.
+
+Example:
+
+```lua
+local currentFov = API.game.getOption("fov")
+API.game.setOption("fov", currentFov)
+API.game.openChat("/help")
+```
+
+## Camera API
+
+- `API.camera.getPosition()` — camera position as `{ x, y, z }`.
+- `API.camera.getYaw()`, `API.camera.getPitch()` — view direction in degrees.
+- `API.camera.getRotation()` — `{ yaw, pitch }`.
+- `API.camera.project(x, y, z)` — screen position as `{ x, y, depth }`, or `nil` when the position cannot be projected (for example, when it is behind the camera).
+
+Projected coordinates are GUI pixels.
+
+## Mouse API
+
+- `API.mouse.getX()`, `API.mouse.getY()` — cursor position in GUI pixels.
+- `API.mouse.getPosition()` — `{ x, y }`.
+- `API.mouse.isDown(button)` — whether `"left"`, `"right"` or `"middle"` is held.
+
+## Sound API
+
+- `API.sound.play(id, volume?, pitch?)` — play a game sound by its sound ID. Volume and pitch default to 1.
+
+Example:
+
+```lua
+API.sound.play("entity.experience_orb.pickup")
+```
+
 ## Timer API
 
 The Timer API wraps Zeus's timer scheduler and passes timer handles through unchanged.
@@ -285,4 +333,4 @@ Wrapper methods return `nil, error_code` when validation fails, the required gam
 
 ## Compatibility note
 
-The 0.3.0 and 0.4.0 example flows were user-reported as working in Eaglercraft 26.2 and 26.3. The 0.5.0 preview exposed a per-mod namespace binding issue; 0.5.1 adds explicit consumer binding and awaits in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
+The 0.3.0 through 0.5.1 example flows were user-reported as working in Eaglercraft 26.2 and 26.3. The Game, Camera, Mouse and Sound wrappers added in 0.6.0 are awaiting in-game testing on both clients. See [the compatibility matrix](../tests/COMPATIBILITY-MATRIX.md).
