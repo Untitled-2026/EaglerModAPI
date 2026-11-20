@@ -42,6 +42,21 @@ The main 0.3.0 example flow was reported passing in both target clients on 2026-
 10. Check both Mods menu Logs for load errors.
 11. Repeat all checks in Eaglercraft 26.2 and 26.3 separately.
 
+## 0.6.0 Game, Camera, Mouse and Sound test
+
+1. Download the newest successful **Build Zeus mod packages** artifact from GitHub Actions.
+2. Extract the outer artifact ZIP; do not extract either mod ZIP inside it.
+3. Import and enable EaglerModAPI 0.6.0, then import and enable EaglerModAPI Test Mod 0.6.0.
+4. Enter a world and confirm the HUD adds FPS and camera yaw/pitch values.
+5. Run `/emapi inspect` and check that it prints FPS, screen ID, screen size, camera position/rotation and mouse position.
+6. Move the mouse and run `/emapi inspect` again; confirm the mouse coordinates change.
+7. Run `/emapi sound` and confirm the experience-orb pickup sound plays.
+8. Run `/emapi chat`; confirm chat opens with `/emapi ping` prefilled. Press Enter only if you intend to run that command.
+9. Run `/emapi optioncheck`; confirm it reads the current FOV and writes the same value back without changing the setting.
+10. In a small temporary test mod, call `API.camera.project(x, y, z)` on a position in front of the camera and confirm the returned screen coordinates; also confirm a position behind the camera can return `nil`.
+11. Check the Mods menu Logs for errors.
+12. Repeat all checks in Eaglercraft 26.2 and 26.3 separately.
+
 ## 0.5.1 Settings, Keybinds and Storage test
 
 1. Download the newest successful **Build Zeus mod packages** artifact from GitHub Actions.
