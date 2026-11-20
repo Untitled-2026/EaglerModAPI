@@ -7,5 +7,5 @@ return {
     id = "26.3",
     apiFamily = "zeus-lua",
     documentationStatus = "documented",
-    runtimeTestStatus = "0.3.0 and 0.4.0 example flows passed (user-reported 2026-11-19); 0.5.0 Settings/Keys/Storage pending"
+    runtimeTestStatus = "0.3.0 and 0.4.0 example flows passed (user-reported 2026-11-19); 0.5.0 settings ownership issue; 0.5.1 context binding pending"
 }
