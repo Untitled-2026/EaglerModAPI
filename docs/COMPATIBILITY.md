@@ -5,7 +5,7 @@
 - Eaglercraft 26.2
 - Eaglercraft 26.3
 
-The main 0.3.0 and 0.4.0 example flows were user-reported as passing on both targets. The additional 0.5.0 Settings, Keybinds and Storage modules remain pending in-game testing on each client.
+The main 0.3.0 and 0.4.0 example flows were user-reported as passing on both targets. The 0.5.0 preview exposed a settings ownership issue. Version 0.5.1 adds explicit per-mod binding for Settings, Keybinds and Storage and remains pending in-game testing on each client.
 
 ## Detection order
 
