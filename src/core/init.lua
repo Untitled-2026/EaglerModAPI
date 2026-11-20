@@ -6,13 +6,13 @@ local events = require("src.modules.events")
 local commands = require("src.modules.commands")
 local timer = require("src.modules.timer")
 local ui = require("src.modules.ui")
-local settings = require("src.modules.settings")
-local keys = require("src.modules.keys")
-local storage = require("src.modules.storage")
+local settingsModule = require("src.modules.settings")
+local keysModule = require("src.modules.keys")
+local storageModule = require("src.modules.storage")
 
 local API = {
     name = "EaglerModAPI",
-    version = "0.5.0",
+    version = "0.5.1",
     compat = compat,
     player = player,
     world = world,
@@ -21,9 +21,9 @@ local API = {
     commands = commands,
     timer = timer,
     ui = ui,
-    settings = settings,
-    keys = keys,
-    storage = storage
+    settings = settingsModule,
+    keys = keysModule,
+    storage = storageModule
 }
 
 function API.getInfo()
@@ -43,6 +43,33 @@ end
 
 function API.hasCapability(name)
     return compat.has(name)
+end
+
+-- Bind per-mod Zeus namespaces so helper registrations and saved data belong
+-- to the consumer mod rather than EaglerModAPI itself.
+function API.forMod(context)
+    if type(context) ~= "table" then
+        return nil, "mod_context_must_be_a_table"
+    end
+
+    local boundSettings, settingsError = settingsModule.bind(context.settings)
+    if not boundSettings then return nil, settingsError end
+
+    local boundKeys, keysError = keysModule.bind(context.keys)
+    if not boundKeys then return nil, keysError end
+
+    local boundStorage, storageError = storageModule.bind(context.storage, context.mod)
+    if not boundStorage then return nil, storageError end
+
+    local BoundAPI = {}
+    for key, value in pairs(API) do
+        BoundAPI[key] = value
+    end
+
+    BoundAPI.settings = boundSettings
+    BoundAPI.keys = boundKeys
+    BoundAPI.storage = boundStorage
+    return BoundAPI
 end
 
 return API
