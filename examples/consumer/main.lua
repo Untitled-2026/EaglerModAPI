@@ -315,7 +315,11 @@ API.commands.register("emapi", function(args, raw)
 
         chat.print("FPS: " .. display(API.game.getFPS()))
         chat.print("Screen: " .. display(API.game.getScreen()))
-        chat.print("Canvas: " .. display(size and size.width) .. " x " .. display(size and size.height))
+        chat.print("Paused: " .. display(API.game.isPaused())
+            .. " | In world: " .. display(API.game.inWorld())
+            .. " | Singleplayer: " .. display(API.game.isSingleplayer()))
+        chat.print("Canvas: " .. display(size and size.width) .. " x " .. display(size and size.height)
+            .. " | GUI scale: " .. display(API.game.getScale()))
         chat.print("Camera: " .. display(cameraPosition and cameraPosition.x) .. ", "
             .. display(cameraPosition and cameraPosition.y) .. ", "
             .. display(cameraPosition and cameraPosition.z))
