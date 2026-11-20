@@ -1,10 +1,7 @@
--- Convenience helpers for Zeus's persistent per-mod storage table.
+-- Factory for storage wrappers bound to the calling mod's Zeus namespace.
+-- Storage and mod.save are per-mod; never access the library mod's globals for consumers.
 
 local Storage = {}
-
-local function hasStorage()
-    return type(storage) == "table"
-end
 
 local function finiteNumber(value)
     return value == value and value ~= math.huge and value ~= -math.huge
@@ -39,59 +36,63 @@ local function isStorable(value, seen, depth)
     return true
 end
 
-local function saveNow()
-    if type(mod) ~= "table" or type(mod.save) ~= "function" then
-        return nil, "zeus_function_unavailable: mod.save"
+function Storage.bind(storageNamespace, modNamespace)
+    if type(storageNamespace) ~= "table" then
+        return nil, "storage_namespace_must_be_a_table"
     end
-    local ok, err = pcall(mod.save)
-    if not ok then return nil, tostring(err) end
-    return true
-end
-
-function Storage.get(key, defaultValue)
-    if type(key) ~= "string" or key == "" then
-        return nil, "storage_key_must_be_a_non_empty_string"
-    end
-    if not hasStorage() then
-        return nil, "zeus_storage_unavailable"
-    end
-    local value = storage[key]
-    if value == nil then return defaultValue end
-    return value
-end
-
-function Storage.set(key, value, saveImmediately)
-    if type(key) ~= "string" or key == "" then
-        return nil, "storage_key_must_be_a_non_empty_string"
-    end
-    if saveImmediately ~= nil and type(saveImmediately) ~= "boolean" then
-        return nil, "saveImmediately_must_be_boolean"
-    end
-    if not hasStorage() then
-        return nil, "zeus_storage_unavailable"
-    end
-    if value ~= nil and not isStorable(value, {}, 1) then
-        return nil, "value_must_contain_only_finite_numbers_strings_booleans_and_plain_tables"
+    if type(modNamespace) ~= "table" then
+        return nil, "mod_namespace_must_be_a_table"
     end
 
-    storage[key] = value
-    if saveImmediately then return saveNow() end
-    return true
-end
+    local Bound = {}
 
-function Storage.remove(key, saveImmediately)
-    return Storage.set(key, nil, saveImmediately)
-end
-
-function Storage.all()
-    if not hasStorage() then
-        return nil, "zeus_storage_unavailable"
+    local function saveNow()
+        if type(modNamespace.save) ~= "function" then
+            return nil, "zeus_function_unavailable: mod.save"
+        end
+        local ok, err = pcall(modNamespace.save)
+        if not ok then return nil, tostring(err) end
+        return true
     end
-    return storage
-end
 
-function Storage.save()
-    return saveNow()
+    function Bound.get(key, defaultValue)
+        if type(key) ~= "string" or key == "" then
+            return nil, "storage_key_must_be_a_non_empty_string"
+        end
+        local value = storageNamespace[key]
+        if value == nil then return defaultValue end
+        return value
+    end
+
+    function Bound.set(key, value, saveImmediately)
+        if type(key) ~= "string" or key == "" then
+            return nil, "storage_key_must_be_a_non_empty_string"
+        end
+        if saveImmediately ~= nil and type(saveImmediately) ~= "boolean" then
+            return nil, "saveImmediately_must_be_boolean"
+        end
+        if value ~= nil and not isStorable(value, {}, 1) then
+            return nil, "value_must_contain_only_finite_numbers_strings_booleans_and_plain_tables"
+        end
+
+        storageNamespace[key] = value
+        if saveImmediately then return saveNow() end
+        return true
+    end
+
+    function Bound.remove(key, saveImmediately)
+        return Bound.set(key, nil, saveImmediately)
+    end
+
+    function Bound.all()
+        return storageNamespace
+    end
+
+    function Bound.save()
+        return saveNow()
+    end
+
+    return Bound
 end
 
 return Storage
