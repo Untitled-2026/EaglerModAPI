@@ -44,7 +44,7 @@ EaglerModAPI/
 
 GitHub Actions automatically validates the metadata and builds both installable ZIPs on pushes to `main`, pull requests targeting `main`, and manual workflow runs. Open the repository's **Actions** tab, select **Build Zeus mod packages**, open a successful run, and download its artifact named `EaglerModAPI-packages-<commit>`. The artifact contains both ZIPs and `SHA256SUMS.txt`, and is retained for 30 days.
 
-To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.3.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
+To publish permanent versioned download assets, update the version in both mod metadata files, then push a matching tag such as `v0.6.0`. The workflow will create a GitHub Release containing both ZIPs and their checksums. See [docs/BUILDING.md](docs/BUILDING.md) for details.
 
 To test the current 0.6.0 development build, download the newest successful build artifact from the [GitHub Actions workflow](https://github.com/Untitled-2026/EaglerModAPI/actions/workflows/build-mods.yml). Ordinary CI runs do not overwrite the 0.1.0 preview downloads.
 
@@ -120,7 +120,7 @@ The 0.6.0 development API includes:
 - `EaglerModAPI.mouse` — read mouse position and button state.
 - `EaglerModAPI.sound` — play game sounds.
 
-The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.3.0 example flow was reported working in both supported clients. That confirms the tested example paths, not every individual helper.
+The public functions are documented in [docs/API.md](docs/API.md). The exact capability list is discovered at runtime; a capability is only reported when the corresponding Zeus function exists. The 0.3.0 through 0.5.1 example flows were reported working in both supported clients. The 0.6.0 Game, Camera, Mouse and Sound modules are awaiting in-game testing.
 
 ## Development principles
 
